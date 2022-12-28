@@ -37,6 +37,23 @@ const getAllPokemonsSortedByTypeName = async (req, res) => {
         res.status(500).json({message: error.message})
     }
 }
+const getAllPokemonsWithAbilities = async (req, res) => {
+    try {
+        const data = await pool.query(pokemonQueries.getPokemonsWithAbilities);
+        res.status(200).json(data.rows);
+    }
+    catch (error){
+        res.status(500).json({message: error.message})
+    }
+}
+const getAllPokemonsSortedByAbilityName = async (req, res) => {
+    try {
+        const data = await pool.query(pokemonQueries.getPokemonsWithAbilitiesSortedByAbilityName)
+        res.status(200).json(data.rows);
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+}
 const createNewPokemon = async (req, res) => {
     try {
         const { name, hp, attack, defense, generation} = req.body;
@@ -158,6 +175,8 @@ module.exports = {
     getAllPokemonsWithTypes,
     getAllPokemonsSortedByTypeName,
     getAllPokemonsSortedByName,
+    getAllPokemonsWithAbilities,
+    getAllPokemonsSortedByAbilityName,
     createNewPokemon,
     deletePokemon,
     updatePokemon,

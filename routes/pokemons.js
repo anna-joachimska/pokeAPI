@@ -10,6 +10,10 @@ router.get('/withTypes', pokemonController.getAllPokemonsWithTypes);
 
 router.get('/sortedByTypeName', pokemonController.getAllPokemonsSortedByTypeName);
 
+router.get('/withAbilities', pokemonController.getAllPokemonsWithAbilities);
+
+router.get('/sortedByAbilityName', pokemonController.getAllPokemonsSortedByAbilityName);
+
 router.post('/', pokemonController.createNewPokemon);
 
 router.get('/pokemon/:pokemonId', pokemonController.getPokemon);

@@ -4,6 +4,8 @@ const getPokemonsSortedByName = "SELECT * FROM pokemons ORDER BY pokemons.name";
 const getPokemonsWithTypes = "SELECT pokemons.name as pokemon, types.name as type FROM pokemons, types, pokemons_types WHERE pokemon_id = pokemons.id AND type_id = types.id LIMIT 20";
 const getPokemonsWithTypesSortedByTypeName = "SELECT pokemons.name as pokemon, types.name as type FROM pokemons, types, pokemons_types WHERE pokemon_id = pokemons.id AND type_id = types.id ORDER BY types.name LIMIT 20";
 
+const getPokemonsWithAbilities = "SELECT pokemons.name as pokemon, abilities.name as ability FROM pokemons, abilities, pokemons_abilities WHERE pokemon_id = pokemons.id AND ability_id = abilities.id LIMIT 20";
+const getPokemonsWithAbilitiesSortedByAbilityName = "SELECT pokemons.name as pokemon, abilities.name as ability FROM pokemons, abilities, pokemons_abilities WHERE pokemon_id = pokemons.id AND ability_id = abilities.id ORDER BY abilities.name LIMIT 20";
 
 const getPokemonById = "SELECT * FROM pokemons WHERE id = $1";
 const getPokemonByName = "SELECT * FROM pokemons WHERE name = $1";
@@ -28,6 +30,8 @@ module.exports = {
     getPokemonsWithTypes,
     getPokemonsWithTypesSortedByTypeName,
     getPokemonsSortedByName,
+    getPokemonsWithAbilities,
+    getPokemonsWithAbilitiesSortedByAbilityName,
     checkIfPokemonNameExists,
     checkIfAnyPokemonHaveAbility,
     createPokemon,

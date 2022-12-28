@@ -16,7 +16,7 @@ const createNewType = async (req, res) => {
         const { name } = req.body;
         const result = await pool.query(typeQueries.checkIfTypeNameExists, [name]);
         if (result.rows.length){
-            res.send("name already exists in DB")
+            return res.send("name already exists in DB")
         }
         const type = new Type({name});
         await type.createType();

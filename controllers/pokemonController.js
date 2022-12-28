@@ -1,5 +1,6 @@
 const pool = require("../db");
 const pokemonQueries = require("../queries/pokemonQueries");
+const typeQueries = require("../queries/typeQueries");
 const Pokemon = require("../models/Pokemon");
 
 const getAllPokemons = async (req, res) => {
@@ -7,6 +8,15 @@ const getAllPokemons = async (req, res) => {
         const data = await pool.query(pokemonQueries.getPokemons)
         res.status(200).json(data.rows);
     } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+}
+const getAllPokemonsWithTypes = async (req, res) => {
+    try {
+        const data = await pool.query(pokemonQueries.getPokemonsWithTypes);
+        res.status(200).json(data.rows);
+    }
+    catch (error){
         res.status(500).json({message: error.message})
     }
 }
@@ -72,12 +82,11 @@ const addTypeToPokemon = async (req, res) => {
     try {
         const pokemonId = parseInt(req.params.pokemonId);
         const { typeName } = req.body
-        const data = await pool.query(pokemonQueries.getPokemonById, [id]);
+        const data = await pool.query(pokemonQueries.getPokemonById, [pokemonId]);
         if (!data.rows.length) return res.status(404).json('Pokemon not found');
-        // const result = await pool.query(typeQueries.checkIfTypeNameExists, [typeName]);
-        // if (result.rows.length){
-        //     res.send("name already exists in DB")
-        // }
+        const typeId = await pool.query(typeQueries.getTypeByName, [typeName]);
+        await pool.query(pokemonQueries.addTypeToPokemon, [pokemonId, typeId.rows[0].id])
+        res.status(200).send("successfully added type to pokemon");
 
     } catch (error) {
         res.status(500).json({message:error.message});
@@ -88,13 +97,11 @@ const deleteTypeFromPokemon = async (req, res) => {
     try {
         const pokemonId = parseInt(req.params.pokemonId);
         const { typeName } = req.body
-        const data = await pool.query(pokemonQueries.getPokemonById, [id]);
+        const data = await pool.query(pokemonQueries.getPokemonById, [pokemonId]);
         if (!data.rows.length) return res.status(404).json('Pokemon not found');
-        // const result = await pool.query(typeQueries.checkIfTypeNameExists, [typeName]);
-        // if (result.rows.length){
-        //     res.send("name already exists in DB")
-        // }
-
+        const typeId = await pool.query(typeQueries.getTypeByName, [typeName]);
+        await pool.query(pokemonQueries.deleteTypeFromPokemon, [pokemonId, typeId.rows[0].id])
+        res.status(200).send("successfully deleted type from pokemon");
     } catch (error) {
         res.status(500).json({message:error.message});
     }
@@ -103,6 +110,7 @@ const deleteTypeFromPokemon = async (req, res) => {
 module.exports = {
     getPokemon,
     getAllPokemons,
+    getAllPokemonsWithTypes,
     createNewPokemon,
     deletePokemon,
     updatePokemon,

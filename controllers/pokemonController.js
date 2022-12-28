@@ -2,10 +2,19 @@ const pool = require("../db");
 const pokemonQueries = require("../queries/pokemonQueries");
 const typeQueries = require("../queries/typeQueries");
 const Pokemon = require("../models/Pokemon");
+const abilityQueries = require("../queries/abilityQueries");
 
 const getAllPokemons = async (req, res) => {
     try {
         const data = await pool.query(pokemonQueries.getPokemons)
+        res.status(200).json(data.rows);
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+}
+const getAllPokemonsSortedByName = async (req, res) => {
+    try {
+        const data = await pool.query(pokemonQueries.getPokemonsSortedByName)
         res.status(200).json(data.rows);
     } catch (error) {
         res.status(500).json({message: error.message})
@@ -20,7 +29,14 @@ const getAllPokemonsWithTypes = async (req, res) => {
         res.status(500).json({message: error.message})
     }
 }
-
+const getAllPokemonsSortedByTypeName = async (req, res) => {
+    try {
+        const data = await pool.query(pokemonQueries.getPokemonsWithTypesSortedByTypeName)
+        res.status(200).json(data.rows);
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+}
 const createNewPokemon = async (req, res) => {
     try {
         const { name, hp, attack, defense, generation} = req.body;
@@ -106,14 +122,47 @@ const deleteTypeFromPokemon = async (req, res) => {
         res.status(500).json({message:error.message});
     }
 }
+const addAbilityToPokemon = async (req, res) => {
+    try {
+        const pokemonId = parseInt(req.params.pokemonId);
+        console.log(pokemonId)
+        const { abilityName } = req.body
+        console.log(abilityName)
+        const data = await pool.query(pokemonQueries.getPokemonById, [pokemonId]);
+        if (!data.rows.length) return res.status(404).json('Pokemon not found');
+        const abilityId = await pool.query(abilityQueries.getAbilityByName, [abilityName]);
+        await pool.query(pokemonQueries.addAbilityToPokemon, [pokemonId, abilityId.rows[0].id])
+        res.status(200).send("successfully added ability to pokemon");
 
+    } catch (error) {
+        res.status(500).json({message:error.message});
+    }
+}
+
+const deleteAbilityFromPokemon = async (req, res) => {
+    try {
+        const pokemonId = parseInt(req.params.pokemonId);
+        const { abilityName } = req.body
+        const data = await pool.query(pokemonQueries.getPokemonById, [pokemonId]);
+        if (!data.rows.length) return res.status(404).json('Pokemon not found');
+        const abilityId = await pool.query(abilityQueries.getAbilityByName, [abilityName]);
+        await pool.query(pokemonQueries.deleteAbilityFromPokemon, [pokemonId, abilityId.rows[0].id])
+        res.status(200).send("successfully deleted ability from pokemon");
+    } catch (error) {
+        res.status(500).json({message:error.message});
+    }
+}
 module.exports = {
     getPokemon,
     getAllPokemons,
     getAllPokemonsWithTypes,
+    getAllPokemonsSortedByTypeName,
+    getAllPokemonsSortedByName,
     createNewPokemon,
     deletePokemon,
     updatePokemon,
     addTypeToPokemon,
-    deleteTypeFromPokemon
+    deleteTypeFromPokemon,
+    addAbilityToPokemon,
+    deleteAbilityFromPokemon,
 }

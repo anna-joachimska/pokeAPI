@@ -1,6 +1,8 @@
 const pool = require("../db");
 const abilityQueries = require("../queries/abilityQueries");
 const Ability = require("../models/Ability");
+const pokemonQueries = require("../queries/pokemonQueries");
+const typeQueries = require("../queries/typeQueries");
 
 const getAllAbilities = async (req, res) => {
     try {
@@ -60,8 +62,13 @@ const deleteAbility = async (req, res) => {
         if (!data.rows.length) {
             return res.status(404).json({message: 'Ability not found'});
         }
-        await pool.query(abilityQueries.deleteAbility, [id])
-        res.status(200).send('Ability has been deleted');
+        const pokemonsWithAbilities = await pool.query(pokemonQueries.checkIfAnyPokemonHaveAbility, [id])
+        console.log(pokemonsWithAbilities.rows.length);
+        if (!pokemonsWithAbilities.rows.length) {
+            await pool.query(abilityQueries.deleteAbility, [id])
+            res.status(200).send('Ability has been deleted');
+        }
+        return res.status(400).send('Ability cannot be deleted');
 
     } catch (error) {
         res.status(500).json({message:error.message});
@@ -73,5 +80,5 @@ module.exports = {
     getAllAbilities,
     createNewAbility,
     updateAbility,
-    deleteAbility
+    deleteAbility,
 }

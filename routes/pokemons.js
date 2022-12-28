@@ -4,7 +4,11 @@ const pokemonController = require("../controllers/pokemonController");
 
 router.get('/', pokemonController.getAllPokemons);
 
+router.get('/sortedByName', pokemonController.getAllPokemonsSortedByName);
+
 router.get('/withTypes', pokemonController.getAllPokemonsWithTypes);
+
+router.get('/sortedByTypeName', pokemonController.getAllPokemonsSortedByTypeName);
 
 router.post('/', pokemonController.createNewPokemon);
 
@@ -18,8 +22,8 @@ router.post('/addTypeToPokemon/:pokemonId', pokemonController.addTypeToPokemon);
 
 router.delete('/deleteTypeFromPokemon/:pokemonId', pokemonController.deleteTypeFromPokemon);
 
-// router.post('/addAbilityToPokemon/:pokemonId', pokemonController.addAbilityToPokemon);
-//
-// router.delete('/deleteAbilityToPokemon/:pokemonId', pokemonController.deleteAbilityFromPokemon);
+router.post('/addAbilityToPokemon/:pokemonId', pokemonController.addAbilityToPokemon);
+
+router.delete('/deleteAbilityToPokemon/:pokemonId', pokemonController.deleteAbilityFromPokemon);
 
 module.exports = router;

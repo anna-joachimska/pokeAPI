@@ -4,15 +4,23 @@ const pokemonController = require("../controllers/pokemonController");
 
 router.get('/', pokemonController.getAllPokemons);
 
-router.get('/sortedByName', pokemonController.getAllPokemonsSortedByName);
+router.get('/sorted/byName', pokemonController.getAllPokemonsSortedByName);
 
 router.get('/withTypes', pokemonController.getAllPokemonsWithTypes);
 
-router.get('/sortedByTypeName', pokemonController.getAllPokemonsSortedByTypeName);
+router.get('/sorted/byTypeName', pokemonController.getAllPokemonsSortedByTypeName);
 
 router.get('/withAbilities', pokemonController.getAllPokemonsWithAbilities);
 
-router.get('/sortedByAbilityName', pokemonController.getAllPokemonsSortedByAbilityName);
+router.get('/sorted/byAbilityName', pokemonController.getAllPokemonsSortedByAbilityName);
+
+router.get('/sorted/byHp', pokemonController.getAllPokemonsSortedByHp);
+
+router.get('/sorted/byAttack', pokemonController.getAllPokemonsSortedByAttack);
+
+router.get('/sorted/byDefense', pokemonController.getAllPokemonsSortedByDefense);
+
+router.get('/sorted/byGeneration', pokemonController.getAllPokemonsSortedByGeneration);
 
 router.post('/', pokemonController.createNewPokemon);
 

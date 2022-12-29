@@ -54,6 +54,38 @@ const getAllPokemonsSortedByAbilityName = async (req, res) => {
         res.status(500).json({message: error.message})
     }
 }
+const getAllPokemonsSortedByHp = async (req, res) => {
+    try {
+        const data = await pool.query(pokemonQueries.getPokemonsSortedByHp)
+        res.status(200).json(data.rows);
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+}
+const getAllPokemonsSortedByAttack = async (req, res) => {
+    try {
+        const data = await pool.query(pokemonQueries.getPokemonsSortedByAttack)
+        res.status(200).json(data.rows);
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+}
+const getAllPokemonsSortedByDefense = async (req, res) => {
+    try {
+        const data = await pool.query(pokemonQueries.getPokemonsSortedByDefense)
+        res.status(200).json(data.rows);
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+}
+const getAllPokemonsSortedByGeneration = async (req, res) => {
+    try {
+        const data = await pool.query(pokemonQueries.getPokemonsSortedByGeneration)
+        res.status(200).json(data.rows);
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+}
 const createNewPokemon = async (req, res) => {
     try {
         const { name, hp, attack, defense, generation} = req.body;
@@ -177,6 +209,10 @@ module.exports = {
     getAllPokemonsSortedByName,
     getAllPokemonsWithAbilities,
     getAllPokemonsSortedByAbilityName,
+    getAllPokemonsSortedByHp,
+    getAllPokemonsSortedByAttack,
+    getAllPokemonsSortedByDefense,
+    getAllPokemonsSortedByGeneration,
     createNewPokemon,
     deletePokemon,
     updatePokemon,

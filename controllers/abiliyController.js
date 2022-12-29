@@ -18,7 +18,7 @@ const createNewAbility = async (req, res) => {
         const { name } = req.body;
         const result = await pool.query(abilityQueries.checkIfAbilityNameExists, [name]);
         if (result.rows.length){
-            res.send("name already exists in DB")
+            throw new Error("name already exists in DB")
         }
         const ability = new Ability({name});
         await ability.createAbility();

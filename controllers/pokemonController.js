@@ -89,9 +89,9 @@ const getAllPokemonsSortedByGeneration = async (req, res) => {
 const createNewPokemon = async (req, res) => {
     try {
         const { name, hp, attack, defense, generation} = req.body;
-        const result = await pool.query(pokemonQueries.checkIfPokemonNameExists, [name]);
+        const result = await pool.query(pokemonQueries.checkIfPokemonNameExists, [name.toLowerCase()]);
         if (result.rows.length){
-            res.send("name already exists in DB")
+            throw new Error("name already exists in DB")
         }
         const pokemon = new Pokemon({name, hp, attack, defense, generation});
         const data = await pokemon.createPokemon();

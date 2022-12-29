@@ -1,16 +1,16 @@
-const getPokemons = "SELECT * FROM pokemons LIMIT 20 ";
-const getPokemonsSortedByName = "SELECT * FROM pokemons ORDER BY pokemons.name";
+const getPokemons = "SELECT * FROM pokemons LIMIT $2 OFFSET (($1 - 1) * $2)";
+const getPokemonsSortedByName = "SELECT * FROM pokemons ORDER BY pokemons.name LIMIT $2 OFFSET (($1 - 1) * $2)";
 
-const getPokemonsWithTypes = "SELECT pokemons.name as pokemon, types.name as type FROM pokemons, types, pokemons_types WHERE pokemon_id = pokemons.id AND type_id = types.id LIMIT 20";
-const getPokemonsWithTypesSortedByTypeName = "SELECT pokemons.name as pokemon, types.name as type FROM pokemons, types, pokemons_types WHERE pokemon_id = pokemons.id AND type_id = types.id ORDER BY types.name LIMIT 20";
+const getPokemonsWithTypes = "SELECT pokemons.name as pokemon, types.name as type FROM pokemons, types, pokemons_types WHERE pokemon_id = pokemons.id AND type_id = types.id LIMIT $2 OFFSET (($1 - 1) * $2)";
+const getPokemonsWithTypesSortedByTypeName = "SELECT pokemons.name as pokemon, types.name as type FROM pokemons, types, pokemons_types WHERE pokemon_id = pokemons.id AND type_id = types.id ORDER BY types.name LIMIT $2 OFFSET (($1 - 1) * $2)";
 
-const getPokemonsWithAbilities = "SELECT pokemons.name as pokemon, abilities.name as ability FROM pokemons, abilities, pokemons_abilities WHERE pokemon_id = pokemons.id AND ability_id = abilities.id LIMIT 20";
-const getPokemonsWithAbilitiesSortedByAbilityName = "SELECT pokemons.name as pokemon, abilities.name as ability FROM pokemons, abilities, pokemons_abilities WHERE pokemon_id = pokemons.id AND ability_id = abilities.id ORDER BY abilities.name LIMIT 20";
+const getPokemonsWithAbilities = "SELECT pokemons.name as pokemon, abilities.name as ability FROM pokemons, abilities, pokemons_abilities WHERE pokemon_id = pokemons.id AND ability_id = abilities.id LIMIT $2 OFFSET (($1 - 1) * $2)";
+const getPokemonsWithAbilitiesSortedByAbilityName = "SELECT pokemons.name as pokemon, abilities.name as ability FROM pokemons, abilities, pokemons_abilities WHERE pokemon_id = pokemons.id AND ability_id = abilities.id ORDER BY abilities.name LIMIT $2 OFFSET (($1 - 1) * $2)";
 
-const getPokemonsSortedByHp = "SELECT * FROM pokemons ORDER BY pokemons.hp DESC";
-const getPokemonsSortedByAttack = "SELECT * FROM pokemons ORDER BY pokemons.attack DESC";
-const getPokemonsSortedByDefense = "SELECT * FROM pokemons ORDER BY pokemons.defense DESC";
-const getPokemonsSortedByGeneration = "SELECT * FROM pokemons ORDER BY pokemons.generation DESC";
+const getPokemonsSortedByHp = "SELECT * FROM pokemons ORDER BY pokemons.hp DESC LIMIT $2 OFFSET (($1 - 1) * $2)";
+const getPokemonsSortedByAttack = "SELECT * FROM pokemons ORDER BY pokemons.attack DESC LIMIT $2 OFFSET (($1 - 1) * $2)";
+const getPokemonsSortedByDefense = "SELECT * FROM pokemons ORDER BY pokemons.defense DESC LIMIT $2 OFFSET (($1 - 1) * $2)";
+const getPokemonsSortedByGeneration = "SELECT * FROM pokemons ORDER BY pokemons.generation DESC LIMIT $2 OFFSET (($1 - 1) * $2)";
 
 const getPokemonById = "SELECT * FROM pokemons WHERE id = $1";
 const getPokemonByName = "SELECT * FROM pokemons WHERE name = $1";

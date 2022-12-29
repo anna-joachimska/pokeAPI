@@ -6,7 +6,8 @@ const abilityQueries = require("../queries/abilityQueries");
 
 const getAllPokemons = async (req, res) => {
     try {
-        const data = await pool.query(pokemonQueries.getPokemons)
+        const { page, size } = req.query;
+        const data = await pool.query(pokemonQueries.getPokemons, [page, size])
         res.status(200).json(data.rows);
     } catch (error) {
         res.status(500).json({message: error.message})
@@ -14,7 +15,8 @@ const getAllPokemons = async (req, res) => {
 }
 const getAllPokemonsSortedByName = async (req, res) => {
     try {
-        const data = await pool.query(pokemonQueries.getPokemonsSortedByName)
+        const { page, size } = req.query;
+        const data = await pool.query(pokemonQueries.getPokemonsSortedByName, [page, size])
         res.status(200).json(data.rows);
     } catch (error) {
         res.status(500).json({message: error.message})
@@ -22,7 +24,8 @@ const getAllPokemonsSortedByName = async (req, res) => {
 }
 const getAllPokemonsWithTypes = async (req, res) => {
     try {
-        const data = await pool.query(pokemonQueries.getPokemonsWithTypes);
+        const { page, size } = req.query;
+        const data = await pool.query(pokemonQueries.getPokemonsWithTypes, [page, size]);
         res.status(200).json(data.rows);
     }
     catch (error){
@@ -31,7 +34,8 @@ const getAllPokemonsWithTypes = async (req, res) => {
 }
 const getAllPokemonsSortedByTypeName = async (req, res) => {
     try {
-        const data = await pool.query(pokemonQueries.getPokemonsWithTypesSortedByTypeName)
+        const { page, size } = req.query;
+        const data = await pool.query(pokemonQueries.getPokemonsWithTypesSortedByTypeName, [page, size])
         res.status(200).json(data.rows);
     } catch (error) {
         res.status(500).json({message: error.message})
@@ -39,7 +43,8 @@ const getAllPokemonsSortedByTypeName = async (req, res) => {
 }
 const getAllPokemonsWithAbilities = async (req, res) => {
     try {
-        const data = await pool.query(pokemonQueries.getPokemonsWithAbilities);
+        const { page, size } = req.query;
+        const data = await pool.query(pokemonQueries.getPokemonsWithAbilities, [page, size]);
         res.status(200).json(data.rows);
     }
     catch (error){
@@ -48,7 +53,8 @@ const getAllPokemonsWithAbilities = async (req, res) => {
 }
 const getAllPokemonsSortedByAbilityName = async (req, res) => {
     try {
-        const data = await pool.query(pokemonQueries.getPokemonsWithAbilitiesSortedByAbilityName)
+        const { page, size } = req.query;
+        const data = await pool.query(pokemonQueries.getPokemonsWithAbilitiesSortedByAbilityName, [page, size])
         res.status(200).json(data.rows);
     } catch (error) {
         res.status(500).json({message: error.message})
@@ -56,7 +62,8 @@ const getAllPokemonsSortedByAbilityName = async (req, res) => {
 }
 const getAllPokemonsSortedByHp = async (req, res) => {
     try {
-        const data = await pool.query(pokemonQueries.getPokemonsSortedByHp)
+        const { page, size } = req.query;
+        const data = await pool.query(pokemonQueries.getPokemonsSortedByHp, [page, size])
         res.status(200).json(data.rows);
     } catch (error) {
         res.status(500).json({message: error.message})
@@ -64,7 +71,8 @@ const getAllPokemonsSortedByHp = async (req, res) => {
 }
 const getAllPokemonsSortedByAttack = async (req, res) => {
     try {
-        const data = await pool.query(pokemonQueries.getPokemonsSortedByAttack)
+        const { page, size } = req.query;
+        const data = await pool.query(pokemonQueries.getPokemonsSortedByAttack, [page, size])
         res.status(200).json(data.rows);
     } catch (error) {
         res.status(500).json({message: error.message})
@@ -72,7 +80,8 @@ const getAllPokemonsSortedByAttack = async (req, res) => {
 }
 const getAllPokemonsSortedByDefense = async (req, res) => {
     try {
-        const data = await pool.query(pokemonQueries.getPokemonsSortedByDefense)
+        const { page, size } = req.query;
+        const data = await pool.query(pokemonQueries.getPokemonsSortedByDefense, [page, size])
         res.status(200).json(data.rows);
     } catch (error) {
         res.status(500).json({message: error.message})
@@ -80,7 +89,8 @@ const getAllPokemonsSortedByDefense = async (req, res) => {
 }
 const getAllPokemonsSortedByGeneration = async (req, res) => {
     try {
-        const data = await pool.query(pokemonQueries.getPokemonsSortedByGeneration)
+        const { page, size } = req.query;
+        const data = await pool.query(pokemonQueries.getPokemonsSortedByGeneration, [page, size])
         res.status(200).json(data.rows);
     } catch (error) {
         res.status(500).json({message: error.message})

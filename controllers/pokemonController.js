@@ -1,7 +1,7 @@
 const pool = require("../db");
 const pokemonQueries = require("../queries/pokemonQueries");
 const typeQueries = require("../queries/typeQueries");
-const Pokemon = require("../models/Pokemon");
+const Pokemon = require("../models/index");
 const abilityQueries = require("../queries/abilityQueries");
 const pokemonService = require("../services/PokemonService");
 

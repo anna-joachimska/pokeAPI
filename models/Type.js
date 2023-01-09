@@ -64,6 +64,6 @@ module.exports = (sequelize) => {
     const Type = sequelize.define("Type", {
         name: {type:DataTypes.STRING, allowNull:false},
     });
-    Type.belongsToMany(Pokemon);
+    Type.belongsToMany({Pokemon, through: 'pokemons_types'});
     sequelize.sync();
 }

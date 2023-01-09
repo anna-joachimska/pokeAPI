@@ -1,4 +1,4 @@
-
+const pokemonQueries = require("../queries/pokemonQueries")
 const {DataTypes } = require('sequelize');
 const sequelize = require("../db")
 //
@@ -118,6 +118,7 @@ module.exports = (sequelize) => {
         defense: {type: DataTypes.INTEGER, allowNull: false},
         generation: {type: DataTypes.STRING, allowNull: false}
     });
-    Pokemon.hasMany(Type);
+    Pokemon.belongsToMany({Type, through: 'pokemons_types'});
     sequelize.sync();
+    return Pokemon
 }

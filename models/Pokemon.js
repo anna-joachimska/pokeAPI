@@ -104,9 +104,9 @@ const Type = require("../models/Type");
 
 //wersja 4
 
-module.exports = (sequelize) => {
-    const Pokemon = sequelize.define("Pokemon", {
-        name: {type:DataTypes.STRING, allowNull:false},
+
+const Pokemon = sequelize.define("Pokemon", {
+        name: {type:DataTypes.STRING, allowNull:false, unique:true},
         types: [{
                 type: DataTypes.INTEGER,
                 references: {
@@ -118,7 +118,7 @@ module.exports = (sequelize) => {
         defense: {type: DataTypes.INTEGER, allowNull: false},
         generation: {type: DataTypes.STRING, allowNull: false}
     });
-    Pokemon.belongsToMany({Type, through: 'pokemons_types'});
-    sequelize.sync();
-    return Pokemon
-}
+sequelize.sync();
+
+
+module.exports=Pokemon

@@ -4,6 +4,7 @@
 // const {DataTypes} = require("sequelize");
 const Pokemon = require('../models/Pokemon');
 const {DataTypes} = require("sequelize");
+const sequelize = require("../db")
 // // function Type ({
 // //                       name}) {
 // //     this.name = name;
@@ -60,10 +61,10 @@ const {DataTypes} = require("sequelize");
 // };
 
 
-module.exports = (sequelize) => {
-    const Type = sequelize.define("Type", {
+
+const Type = sequelize.define("Type", {
         name: {type:DataTypes.STRING, allowNull:false},
     });
-    Type.belongsToMany({Pokemon, through: 'pokemons_types'});
-    sequelize.sync();
-}
+sequelize.sync();
+
+module.exports=Type

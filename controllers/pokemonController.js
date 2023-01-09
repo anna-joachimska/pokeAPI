@@ -104,14 +104,11 @@ const createNewPokemon = async (req, res) => {
         // if (result.rows.length){
         //     throw new Error("name already exists in DB")
         // }
-        // const pokemon = new Pokemon({name, types, hp, attack, defense, generation});
-        // const data = await pokemon.createPokemon();
         const pokemon = await Pokemon.create({name, types, hp, attack, defense, generation});
         console.log(pokemon)
         res.status(201).send(pokemon);
     }
     catch(error) {
-        console.log(error)
         res.status(500).json({message: error.message})
     };
 }

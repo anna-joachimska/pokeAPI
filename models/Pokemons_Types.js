@@ -4,7 +4,7 @@ const sequelize = require("../db")
 const Type = require("../models/Type");
 const Pokemon = require("../models/Pokemon");
 
-const PokemonsTypes = sequelize.define('Pokemons_Types', {
+const PokemonsTypes = sequelize.define('PokemonsTypes', {
     PokemonId: {
         type: DataTypes.INTEGER,
         references: {
@@ -19,6 +19,8 @@ const PokemonsTypes = sequelize.define('Pokemons_Types', {
             key: 'id'
         }
     }
-});
+},
+    // {tableName:"pokemons_types"}
+    );
 
 module.exports=PokemonsTypes

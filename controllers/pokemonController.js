@@ -2,6 +2,7 @@ const pool = require("../db");
 const pokemonQueries = require("../queries/pokemonQueries");
 const typeQueries = require("../queries/typeQueries");
 const Pokemon = require("../models/index");
+const Type = require("../models/Type");
 const abilityQueries = require("../queries/abilityQueries");
 const pokemonService = require("../services/PokemonService");
 
@@ -104,7 +105,8 @@ const createNewPokemon = async (req, res) => {
         // if (result.rows.length){
         //     throw new Error("name already exists in DB")
         // }
-        const pokemon = await Pokemon.create({name, types, hp, attack, defense, generation});
+
+        const pokemon = await Pokemon.Pokemon.create({name, types, hp, attack, defense, generation});
         console.log(pokemon)
         res.status(201).send(pokemon);
     // }

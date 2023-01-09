@@ -98,7 +98,7 @@ const getAllPokemonsSortedByGeneration = async (req, res) => {
     }
 }
 const createNewPokemon = async (req, res) => {
-    try {
+    // try {
         const { name, types, hp, attack, defense, generation} = req.body;
         // const result = await pool.query(pokemonQueries.checkIfPokemonNameExists, [name.toLowerCase()]);
         // if (result.rows.length){
@@ -107,10 +107,10 @@ const createNewPokemon = async (req, res) => {
         const pokemon = await Pokemon.create({name, types, hp, attack, defense, generation});
         console.log(pokemon)
         res.status(201).send(pokemon);
-    }
-    catch(error) {
-        res.status(500).json({message: error.message})
-    };
+    // }
+    // catch(error) {
+    //     res.status(500).json({message: error.message})
+    // };
 }
 
 const getPokemon = async (req, res) => {

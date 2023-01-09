@@ -1,6 +1,6 @@
 const pool = require("../db");
 const typeQueries = require("../queries/typeQueries");
-const Type = require("../models/Type");
+const Type = require("../models/index");
 
 const getAllTypes = async (req, res) => {
     try {

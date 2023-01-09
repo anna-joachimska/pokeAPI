@@ -1,6 +1,7 @@
 const Type = require("./Type");
 const Pokemon = require("./Pokemon");
+const PokemonsTypes = require("./Pokemons_Types")
+Pokemon.belongsToMany(Type, {through: PokemonsTypes});
+Type.belongsToMany(Pokemon, {through: PokemonsTypes});
 
-Pokemon.belongsToMany(Type, {through: 'pokemons_types'});
-Type.belongsToMany(Pokemon, {through: 'pokemons_types'});
-
+module.exports = {Pokemon, Type}

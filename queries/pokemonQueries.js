@@ -18,7 +18,7 @@ const getPokemonByName = "SELECT * FROM pokemons WHERE name = $1";
 const checkIfPokemonNameExists = "SELECT * FROM pokemons WHERE name = $1";
 const checkIfAnyPokemonHaveAbility = "SELECT * FROM pokemons_abilities WHERE ability_id = $1";
 
-const createPokemon = "INSERT INTO pokemons (name, hp, attack, defense, generation) VALUES ($1, $2, $3, $4, $5)";
+const createPokemon = "INSERT INTO pokemons (name, types, hp, attack, defense, generation) VALUES ($1, $2, $3, $4, $5, $6)";
 const deletePokemon = "DELETE FROM pokemons WHERE id = $1";
 const updatePokemon = "UPDATE pokemons SET name = $1, hp = $2, attack = $3, defense = $4, generation = $5 WHERE id = $6";
 

@@ -24,11 +24,11 @@ router.get('/sorted/byGeneration', pokemonController.getAllPokemonsSortedByGener
 
 router.post('/', pokemonController.createNewPokemon);
 
-router.get('/pokemon/:pokemonId', pokemonController.getPokemon);
+router.get('/:pokemonId', pokemonController.getPokemon);
 
-router.put('/pokemon/:pokemonId',pokemonController.updatePokemon);
+router.put('/:pokemonId',pokemonController.updatePokemon);
 
-router.delete('/pokemon/:pokemonId', pokemonController.deletePokemon);
+router.delete('/:pokemonId', pokemonController.deletePokemon);
 
 router.post('/addTypeToPokemon/:pokemonId', pokemonController.addTypeToPokemon);
 

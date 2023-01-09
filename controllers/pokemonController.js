@@ -3,6 +3,7 @@ const pokemonQueries = require("../queries/pokemonQueries");
 const typeQueries = require("../queries/typeQueries");
 const Pokemon = require("../models/Pokemon");
 const abilityQueries = require("../queries/abilityQueries");
+const pokemonService = require("../services/PokemonService");
 
 const getAllPokemons = async (req, res) => {
     try {
@@ -98,13 +99,15 @@ const getAllPokemonsSortedByGeneration = async (req, res) => {
 }
 const createNewPokemon = async (req, res) => {
     try {
-        const { name, hp, attack, defense, generation} = req.body;
-        const result = await pool.query(pokemonQueries.checkIfPokemonNameExists, [name.toLowerCase()]);
-        if (result.rows.length){
-            throw new Error("name already exists in DB")
-        }
-        const pokemon = new Pokemon({name, hp, attack, defense, generation});
-        const data = await pokemon.createPokemon();
+        const { name, types, hp, attack, defense, generation} = req.body;
+        // const result = await pool.query(pokemonQueries.checkIfPokemonNameExists, [name.toLowerCase()]);
+        // if (result.rows.length){
+        //     throw new Error("name already exists in DB")
+        // }
+        // const pokemon = new Pokemon({name, types, hp, attack, defense, generation});
+        // const data = await pokemon.createPokemon();
+        const pokemon = await Pokemon.create({name, types, hp, attack, defense, generation});
+        console.log(pokemon)
         res.status(201).send(pokemon);
     }
     catch(error) {
@@ -116,22 +119,19 @@ const getPokemon = async (req, res) => {
     try {
         if (!req.params.pokemonId) return res.status(400).json('id not provided');
         const id = parseInt(req.params.pokemonId);
-        const data = await pool.query(pokemonQueries.getPokemonById, [id]);
-        if (!data.rows.length) return res.status(404).json('Pokemon not found');
-        res.status(200).json(data.rows);
+        const details = await pokemonService.getPokemonDetails(id)
+        res.json(details);
     } catch (error) {
         res.status(500).json({message: error.message})
     }
 }
+
 const updatePokemon = async (req, res) => {
     try {
         if (!req.params.pokemonId) return res.status(400).json('id not provided');
         const id = parseInt(req.params.pokemonId);
-        const { name, hp, attack, defense, generation} = req.body;
-        const data = await pool.query(pokemonQueries.getPokemonById, [id]);
-        if (!data.rows.length) return res.status(404).json('Pokemon not found');
-        await pool.query(pokemonQueries.updatePokemon, [name, hp, attack, defense, generation, id])
-        res.status(200).send("Pokemon updated successfully");
+        const details = await pokemonService.updatePokemon(id, req.body);
+        res.status(200).json({message: "pokemon updated successfully"});
     } catch (error) {
         res.status(500).json({message: error.message});
     }

@@ -1,5 +1,7 @@
 const express = require('express');
 // require('dotenv').config();
+// const Sequelize = require("sequelize")
+const pool = require("../pokeAPI/db")
 const pokemonRoutes = require("../pokeAPI/routes/pokemons");
 const typeRoutes = require('../pokeAPI/routes/types');
 const abilityRoutes = require('../pokeAPI/routes/abilities');
@@ -7,6 +9,7 @@ const abilityRoutes = require('../pokeAPI/routes/abilities');
 const bodyParser = require('body-parser');
 
 const app = express();
+
 
 // parse the body of incoming request and use the data
 app.use(bodyParser.urlencoded({extended:false}));

@@ -14,12 +14,16 @@ const getAllTypes = async (req, res) => {
 const createNewType = async (req, res) => {
     try {
         const { name } = req.body;
-        const result = await pool.query(typeQueries.checkIfTypeNameExists, [name]);
-        if (result.rows.length){
-            throw new Error("name already exists in DB")
-        }
-        const type = new Type({name});
-        await type.createType();
+        // const result = await pool.query(typeQueries.checkIfTypeNameExists, [name]);
+        // if (result.rows.length){
+        //     throw new Error("name already exists in DB")
+        // }
+        // const pokemon = await Pokemon.findOne({
+        //     where: {id: pokemonId}
+        // });
+        const type = await Type.create({name});
+        // const type = new Type({name});
+        // await type.createType();
         res.status(201).send(type);
     }
     catch(error) {

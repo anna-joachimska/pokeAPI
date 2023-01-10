@@ -5,9 +5,10 @@ const Pokemon = require("./Pokemon");
 
 const Type = sequelize.define("Type", {
         name: {type:DataTypes.STRING, allowNull:false},
-    }, {
-    tableName:"types"
-});
+    },
+    {timestamps: false,
+    tableName:"Types"}
+);
 sequelize.sync();
 
 module.exports=Type

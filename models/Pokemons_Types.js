@@ -20,7 +20,9 @@ const PokemonsTypes = sequelize.define('PokemonsTypes', {
         }
     }
 },
-    // {tableName:"pokemons_types"}
+    {timestamps: false,tableName:"pokemons_types"}
     );
+
+sequelize.sync();
 
 module.exports=PokemonsTypes

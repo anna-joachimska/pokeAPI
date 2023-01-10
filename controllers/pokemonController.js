@@ -1,7 +1,7 @@
 const pool = require("../db");
 const pokemonQueries = require("../queries/pokemonQueries");
 const typeQueries = require("../queries/typeQueries");
-const Pokemon = require("../models/index");
+const {Pokemon} = require("../models/index");
 const Type = require("../models/Type");
 const abilityQueries = require("../queries/abilityQueries");
 const pokemonService = require("../services/PokemonService");
@@ -100,14 +100,16 @@ const getAllPokemonsSortedByGeneration = async (req, res) => {
 }
 const createNewPokemon = async (req, res) => {
     // try {
-        const { name, types, hp, attack, defense, generation} = req.body;
+        const { name, hp, attack, defense, generation} = req.body;
         // const result = await pool.query(pokemonQueries.checkIfPokemonNameExists, [name.toLowerCase()]);
         // if (result.rows.length){
         //     throw new Error("name already exists in DB")
         // }
 
-        const pokemon = await Pokemon.Pokemon.create({name, types, hp, attack, defense, generation});
-        console.log(pokemon)
+        const firstType = await Type.findOne({where: {id:req.body.types[0]}});
+        const secondType = await Type.findOne({where: {id:req.body.types[1]}});
+        const pokemon = await Pokemon.create({name, hp, attack, defense, generation});
+        await pokemon.addTypes([firstType.id, secondType.id])
         res.status(201).send(pokemon);
     // }
     // catch(error) {

@@ -117,7 +117,8 @@ const createPokemon = async (body) => {
     }
     await pokemon.addType(firstType);
     await pokemon.addAbility(firstAbility);
-    return pokemon
+    const data = await Pokemon.findOne({where:{id:pokemon.id}, include:[Type, Ability]})
+    return data
 }
 
 const updatePokemon = async (id, body, res) => {

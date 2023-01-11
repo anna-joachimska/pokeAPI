@@ -1,7 +1,4 @@
 const express = require('express');
-// require('dotenv').config();
-// const Sequelize = require("sequelize")
-const pool = require("../pokeAPI/db")
 const pokemonRoutes = require("../pokeAPI/routes/pokemons");
 const typeRoutes = require('../pokeAPI/routes/types');
 const abilityRoutes = require('../pokeAPI/routes/abilities');

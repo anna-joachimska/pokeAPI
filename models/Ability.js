@@ -1,17 +1,13 @@
-const pool = require("../db")
-const abilityQueries = require("../queries/abilityQueries")
+const {DataTypes} = require("sequelize");
+const sequelize = require("../db")
 
-function Ability ({
-                   name}) {
-    this.name = name;
-};
 
-Ability.prototype.createAbility = async function() {
-    try {
-        const { rows } = await pool.query(abilityQueries.createAbility, [this.name]);
-        return rows;
-    } catch (error) {
-        throw error;
-    }
-};
-module.exports = Ability;
+const Ability = sequelize.define("Ability", {
+        name: {type:DataTypes.STRING, allowNull:false},
+    },
+    {timestamps: false,
+        tableName:"abilities"}
+);
+sequelize.sync();
+
+module.exports=Ability;

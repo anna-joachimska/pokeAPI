@@ -7,6 +7,7 @@ const {indexOfMaxTypesValue, indexOfMaxAbilitiesValue} = require("../functions/m
 const {countPokemons} = require("../functions/countPokemons");
 
 const getTypeWithAverageHigherHp = async () => {
+
     const data = await sequelize.query(`SELECT AVG(hp) as average_values, "pokemons_types"."TypeId"
 from "pokemons", "pokemons_types" where pokemons.id="pokemons_types"."PokemonId" 
 group by "pokemons_types"."TypeId";`);

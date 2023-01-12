@@ -2,50 +2,14 @@ const typeSerivice = require("../services/TypeService");
 
 const getAllTypes = async (req, res) => {
     try {
-        const { page, size } = req.query;
-        const data = await typeSerivice.getAllTypes(page,size)
+        const { page, size, sortBy , direction} = req.query;
+        const data = await typeSerivice.getAllTypes(page, size, sortBy , direction)
         res.status(200).json(data);
     } catch (error) {
         res.status(500).json({message: error.message})
     }
 }
 
-const getAllTypesSortedByIdASC = async (req, res) => {
-    try {
-        const { page, size } = req.query;
-        const data = await typeSerivice.getAllTypesSortedByIdASC(page,size)
-        res.status(200).json(data);
-    } catch (error) {
-        res.status(500).json({message: error.message})
-    }
-}
-const getAllTypesSortedByIdDESC = async (req, res) => {
-    try {
-        const { page, size } = req.query;
-        const data = await typeSerivice.getAllTypesSortedByIdDESC(page,size)
-        res.status(200).json(data);
-    } catch (error) {
-        res.status(500).json({message: error.message})
-    }
-}
-const getAllTypesSortedByName = async (req, res) => {
-    try {
-        const { page, size } = req.query;
-        const data = await typeSerivice.getAllTypesSortedByName(page,size)
-        res.status(200).json(data);
-    } catch (error) {
-        res.status(500).json({message: error.message})
-    }
-}
-const getAllTypesWithPokemons = async (req, res) => {
-    try {
-        const { page, size } = req.query;
-        const data = await typeSerivice.getAllTypesWithPokemons(page,size)
-        res.status(200).json(data);
-    } catch (error) {
-        res.status(500).json({message: error.message})
-    }
-}
 const createNewType = async (req, res) => {
     try {
         const type = await typeSerivice.createType(req.body);
@@ -92,10 +56,6 @@ const deleteType = async (req, res) => {
 module.exports = {
     getType,
     getAllTypes,
-    getAllTypesSortedByIdASC,
-    getAllTypesSortedByIdDESC,
-    getAllTypesSortedByName,
-    getAllTypesWithPokemons,
     createNewType,
     updateType,
     deleteType

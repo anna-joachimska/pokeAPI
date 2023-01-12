@@ -2,50 +2,14 @@ const abilitySerivice = require("../services/abilityService");
 
 const getAllAbilities = async (req, res) => {
     try {
-        const { page, size } = req.query;
-        const data = await abilitySerivice.getAllAbilities(page,size)
+        const { page, size, sortBy , direction} = req.query;
+        const data = await abilitySerivice.getAllAbilities(page,size, sortBy, direction)
         res.status(200).json(data);
     } catch (error) {
         res.status(500).json({message: error.message})
     }
 }
 
-const getAllAbilitiesSortedByIdASC = async (req, res) => {
-    try {
-        const { page, size } = req.query;
-        const data = await abilitySerivice.getAllAbilitiesSortedByIdASC(page,size)
-        res.status(200).json(data);
-    } catch (error) {
-        res.status(500).json({message: error.message})
-    }
-}
-const getAllAbilitiesSortedByIdDESC = async (req, res) => {
-    try {
-        const { page, size } = req.query;
-        const data = await abilitySerivice.getAllAbilitiesSortedByIdDESC(page,size)
-        res.status(200).json(data);
-    } catch (error) {
-        res.status(500).json({message: error.message})
-    }
-}
-const getAllAbilitiesSortedByName = async (req, res) => {
-    try {
-        const { page, size } = req.query;
-        const data = await abilitySerivice.getAllAbilitiesSortedByName(page,size)
-        res.status(200).json(data);
-    } catch (error) {
-        res.status(500).json({message: error.message})
-    }
-}
-const getAllAbilitiesWithPokemons = async (req, res) => {
-    try {
-        const { page, size } = req.query;
-        const data = await abilitySerivice.getAllAbilitiesWithPokemons(page,size)
-        res.status(200).json(data);
-    } catch (error) {
-        res.status(500).json({message: error.message})
-    }
-}
 const createNewAbility = async (req, res) => {
     try {
         const ability = await abilitySerivice.createAbility(req.body);
@@ -92,10 +56,6 @@ const deleteAbility = async (req, res) => {
 module.exports = {
     getAbility,
     getAllAbilities,
-    getAllAbilitiesSortedByIdASC,
-    getAllAbilitiesSortedByIdDESC,
-    getAllAbilitiesSortedByName,
-    getAllAbilitiesWithPokemons,
     createNewAbility,
     updateAbility,
     deleteAbility,

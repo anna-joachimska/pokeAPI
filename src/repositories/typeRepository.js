@@ -6,36 +6,8 @@ const getType = async (id) => {
     if (!data) return res.status(404).json('Type not found');
     return data
 }
-const getAllTypes = async (page, size) => {
-    const data = await Type.findAll({limit:page, offset:size})
-    return data
-}
-const getAllTypesSortedByName = async (page,size) => {
-    const data = await Type.findAll({order: [['name', 'ASC']],limit:page, offset:size})
-    return data
-}
-const getAllTypesWithPokemons = async (page,size) => {
-    const data = await Type.findAll({
-        order: [['id', 'ASC']],
-        include: [
-            {
-                model: Pokemon,
-                attributes: ['id','name', 'hp','attack','defense','generation'],
-                through: {
-                    attributes: []
-                }
-            }
-        ],
-        limit:page,
-        offset:size})
-    return data
-}
-const getAllTypesSortedByIdASC = async(page, size) => {
-    const data = await Type.findAll({order: [['id', 'ASC']], limit:page, offset:size})
-    return data
-}
-const getAllTypesSortedByIdDESC = async(page, size) => {
-    const data = await Type.findAll({order: [['id', 'DESC']], limit:page, offset:size})
+const getAllTypes = async (page, size, sortBy , direction) => {
+    const data = await Type.findAll({order:[[sortBy,direction]],limit:size, offset:page})
     return data
 }
 const createType = async (body) => {
@@ -72,10 +44,6 @@ const deleteType = async (id,res) => {
 module.exports={
     getType,
     getAllTypes,
-    getAllTypesWithPokemons,
-    getAllTypesSortedByName,
-    getAllTypesSortedByIdASC,
-    getAllTypesSortedByIdDESC,
     createType,
     updateType,
     deleteType,}

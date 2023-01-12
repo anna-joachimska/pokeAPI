@@ -1,130 +1,9 @@
 const pokemonService = require("../services/PokemonService");
-const {Pokemon} = require("../models");
 
 const getAllPokemons = async (req, res) => {
     try {
-        const { page, size } = req.query;
-        const data = await pokemonService.getAllPokemons(page,size)
-        res.status(200).json(data);
-    } catch (error) {
-        res.status(500).json({message: error.message})
-    }
-}
-const getAllPokemonsSortedByIdASC = async (req, res) => {
-    try {
-        const { page, size } = req.query;
-        const data = await pokemonService.getAllPokemonsSortedByIdASC(page,size)
-        res.status(200).json(data);
-    } catch (error) {
-        res.status(500).json({message: error.message})
-    }
-}
-const getAllPokemonsSortedByIdDESC = async (req, res) => {
-    try {
-        const { page, size } = req.query;
-        const data = await pokemonService.getAllPokemonsSortedByIdDESC(page,size)
-        res.status(200).json(data);
-    } catch (error) {
-        res.status(500).json({message: error.message})
-    }
-}
-const getAllPokemonsSortedByName = async (req, res) => {
-    try {
-        const { page, size } = req.query;
-        const data = await pokemonService.getAllPokemonsSortedByName(page,size)
-        res.status(200).json(data);
-    } catch (error) {
-        res.status(500).json({message: error.message})
-    }
-}
-const getAllPokemonsWithTypes = async (req, res) => {
-    try {
-        const { page, size } = req.query;
-        const data = await pokemonService.getAllPokemonsWithTypes(page,size)
-        res.status(200).json(data);
-    }
-    catch (error){
-        res.status(500).json({message: error.message})
-    }
-}
-
-const getAllPokemonsWithAbilities = async (req, res) => {
-    try {
-        const { page, size } = req.query;
-        const data = await pokemonService.getAllPokemonsWithAbilities(page, size);
-        res.status(200).json(data);
-    }
-    catch (error){
-        res.status(500).json({message: error.message})
-    }
-}
-const getAllPokemonsSortedByHpASC = async (req, res) => {
-    try {
-        const { page, size } = req.query;
-        const data = await pokemonService.getAllPokemonsSortedByHpASC(page, size);
-        res.status(200).json(data);
-    } catch (error) {
-        res.status(500).json({message: error.message})
-    }
-}
-const getAllPokemonsSortedByHpDESC = async (req, res) => {
-    try {
-        const { page, size } = req.query;
-        const data = await pokemonService.getAllPokemonsSortedByHpDESC(page, size);
-        res.status(200).json(data);
-    } catch (error) {
-        res.status(500).json({message: error.message})
-    }
-}
-const getAllPokemonsSortedByAttackASC = async (req, res) => {
-    try {
-        const { page, size } = req.query;
-        const data = await pokemonService.getAllPokemonsSortedByAttackASC(page,size);
-        res.status(200).json(data);
-    } catch (error) {
-        res.status(500).json({message: error.message})
-    }
-}
-const getAllPokemonsSortedByAttackDESC = async (req, res) => {
-    try {
-        const { page, size } = req.query;
-        const data = await pokemonService.getAllPokemonsSortedByAttackDESC(page,size);
-        res.status(200).json(data);
-    } catch (error) {
-        res.status(500).json({message: error.message})
-    }
-}
-const getAllPokemonsSortedByDefenseASC = async (req, res) => {
-    try {
-        const { page, size } = req.query;
-        const data = await pokemonService.getAllPokemonsSortedByDefenseASC(page,size);
-        res.status(200).json(data);
-    } catch (error) {
-        res.status(500).json({message: error.message})
-    }
-}
-const getAllPokemonsSortedByDefenseDESC = async (req, res) => {
-    try {
-        const { page, size } = req.query;
-        const data = await pokemonService.getAllPokemonsSortedByDefenseDESC(page,size);
-        res.status(200).json(data);
-    } catch (error) {
-        res.status(500).json({message: error.message})
-    }
-}
-const getAllPokemonsSortedByGenerationASC = async (req, res) => {
-    try {
-        const { page, size } = req.query;
-        const data = await pokemonService.getAllPokemonsSortedByGenerationASC(page,size);
-        res.status(200).json(data);
-    } catch (error) {
-        res.status(500).json({message: error.message})
-    }
-}
-const getAllPokemonsSortedByGenerationDESC = async (req, res) => {
-    try {
-        const { page, size } = req.query;
-        const data = await pokemonService.getAllPokemonsSortedByGenerationDESC(page,size);
+        const { page, size, sortBy , direction} = req.query;
+        const data = await pokemonService.getAllPokemons(page,size,sortBy,direction)
         res.status(200).json(data);
     } catch (error) {
         res.status(500).json({message: error.message})
@@ -218,19 +97,6 @@ const deleteAbilityFromPokemon = async (req, res) => {
 module.exports = {
     getPokemon,
     getAllPokemons,
-    getAllPokemonsSortedByIdASC,
-    getAllPokemonsSortedByIdDESC,
-    getAllPokemonsWithTypes,
-    getAllPokemonsSortedByName,
-    getAllPokemonsWithAbilities,
-    getAllPokemonsSortedByHpASC,
-    getAllPokemonsSortedByHpDESC,
-    getAllPokemonsSortedByAttackASC,
-    getAllPokemonsSortedByAttackDESC,
-    getAllPokemonsSortedByDefenseASC,
-    getAllPokemonsSortedByDefenseDESC,
-    getAllPokemonsSortedByGenerationASC,
-    getAllPokemonsSortedByGenerationDESC,
     createNewPokemon,
     deletePokemon,
     updatePokemon,

@@ -4,14 +4,6 @@ const abilityController = require("../controllers/abiliyController");
 
 router.get('/', abilityController.getAllAbilities);
 
-router.get('/sorted/byId/asc', abilityController.getAllAbilitiesSortedByIdASC);
-
-router.get('/sorted/byId/desc', abilityController.getAllAbilitiesSortedByIdDESC);
-
-router.get('/sorted/byName', abilityController.getAllAbilitiesSortedByName);
-
-router.get('/withPokemons', abilityController.getAllAbilitiesWithPokemons);
-
 router.post('/', abilityController.createNewAbility);
 
 router.get('/:abilityId', abilityController.getAbility);

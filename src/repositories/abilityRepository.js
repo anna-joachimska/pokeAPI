@@ -6,38 +6,11 @@ const getAbility = async (id) => {
     if (!data) return res.status(404).json('Ability not found');
     return data
 }
-const getAllAbilities = async (page, size) => {
-    const data = await Ability.findAll({limit:page, offset:size})
+const getAllAbilities = async (page, size, sortBy, direction) => {
+    const data = await Ability.findAll({order:[[sortBy, direction]],limit:size, offset:page})
     return data
 }
-const getAllAbilitiesSortedByName = async (page,size) => {
-    const data = await Ability.findAll({order: [['name', 'ASC']],limit:page, offset:size})
-    return data
-}
-const getAllAbilitiesWithPokemons = async (page,size) => {
-    const data = await Ability.findAll({
-        order: [['id', 'ASC']],
-        include: [
-            {
-                model: Pokemon,
-                attributes: ['id','name', 'hp','attack','defense','generation'],
-                through: {
-                    attributes: []
-                }
-            }
-        ],
-        limit:page,
-        offset:size})
-    return data
-}
-const getAllAbilitiesSortedByIdASC = async(page, size) => {
-    const data = await Ability.findAll({order: [['id', 'ASC']], limit:page, offset:size})
-    return data
-}
-const getAllAbilitiesSortedByIdDESC = async(page, size) => {
-    const data = await Ability.findAll({order: [['id', 'DESC']], limit:page, offset:size})
-    return data
-}
+
 const createAbility = async (body) => {
     const checkIfExists = await Ability.findOne({where:{name:body.name}})
     if (checkIfExists) {
@@ -72,10 +45,6 @@ const deleteAbility = async (id,res) => {
 module.exports={
     getAbility,
     getAllAbilities,
-    getAllAbilitiesWithPokemons,
-    getAllAbilitiesSortedByName,
-    getAllAbilitiesSortedByIdASC,
-    getAllAbilitiesSortedByIdDESC,
     createAbility,
     updateAbility,
     deleteAbility,}

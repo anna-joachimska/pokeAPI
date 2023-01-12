@@ -15,7 +15,19 @@ const getAllTypesSortedByName = async (page,size) => {
     return data
 }
 const getAllTypesWithPokemons = async (page,size) => {
-    const data = await Type.findAll({order: [['id', 'ASC']],include:Pokemon, limit:page, offset:size})
+    const data = await Type.findAll({
+        order: [['id', 'ASC']],
+        include: [
+            {
+                model: Pokemon,
+                attributes: ['id','name', 'hp','attack','defense','generation'],
+                through: {
+                    attributes: []
+                }
+            }
+        ],
+        limit:page,
+        offset:size})
     return data
 }
 const getAllTypesSortedByIdASC = async(page, size) => {

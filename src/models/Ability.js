@@ -1,12 +1,13 @@
 const {DataTypes} = require("sequelize");
-const sequelize = require("../db")
+const sequelize = require("../../db")
 
-const Type = sequelize.define("Type", {
+
+const Ability = sequelize.define("Ability", {
         name: {type:DataTypes.STRING, allowNull:false},
     },
     {timestamps: false,
-    tableName:"Types"}
+        tableName:"abilities"}
 );
 sequelize.sync();
 
-module.exports=Type;
+module.exports=Ability;

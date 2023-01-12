@@ -1,7 +1,7 @@
 const {DataTypes } = require('sequelize');
-const sequelize = require("../db")
-const Type = require("../models/Type");
-const Pokemon = require("../models/Pokemon");
+const sequelize = require("../../db")
+const Type = require("./Type");
+const Pokemon = require("./Pokemon");
 
 const PokemonsTypes = sequelize.define('PokemonsTypes', {
     PokemonId: {

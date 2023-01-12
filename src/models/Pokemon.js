@@ -1,8 +1,5 @@
-const pokemonQueries = require("../queries/pokemonQueries")
 const {DataTypes } = require('sequelize');
-const sequelize = require("../db")
-const Type = require("../models/Type");
-const PokemonsTypes = require("./Pokemons_Types");
+const sequelize = require("../../db")
 
 const Pokemon = sequelize.define("Pokemon", {
         name: {type:DataTypes.STRING, allowNull:false, unique:true},
@@ -15,6 +12,5 @@ const Pokemon = sequelize.define("Pokemon", {
     tableName: "pokemons"});
 
 sequelize.sync();
-
 
 module.exports=Pokemon

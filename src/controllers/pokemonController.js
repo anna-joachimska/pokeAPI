@@ -1,9 +1,5 @@
-const pool = require("../db");
-const pokemonQueries = require("../queries/pokemonQueries");
-const typeQueries = require("../queries/typeQueries");
-const {Pokemon} = require("../models/index");
-const abilityQueries = require("../queries/abilityQueries");
 const pokemonService = require("../services/PokemonService");
+const {Pokemon} = require("../models");
 
 const getAllPokemons = async (req, res) => {
     try {
@@ -136,11 +132,7 @@ const getAllPokemonsSortedByGenerationDESC = async (req, res) => {
 }
 const createNewPokemon = async (req, res) => {
     try {
-        const checkIfNameExists = await Pokemon.findOne({where: {name:req.body.name}})
-        if (checkIfNameExists) {
-            throw new Error("name already exists in DB")
-        }
-        const pokemon = await pokemonService.createPokemon(req.body);
+        const pokemon = await pokemonService.createPokemon(req.body,res);
         res.status(201).json(pokemon);
     }
     catch(error) {
@@ -164,7 +156,7 @@ const updatePokemon = async (req, res) => {
         if (!req.params.pokemonId) return res.status(400).json('id not provided');
         const id = parseInt(req.params.pokemonId);
         const details = await pokemonService.updatePokemon(id, req.body, res);
-        res.status(200).json({message: "pokemon updated successfully"});
+        res.status(200).json(details);
     } catch (error) {
         res.status(500).json({message: error.message});
     }
@@ -186,7 +178,7 @@ const addTypeToPokemon = async (req, res) => {
     try {
         const pokemonId = parseInt(req.params.pokemonId);
         const data = await pokemonService.addTypeToPokemon(pokemonId,req.body,res);
-        res.status(200).send("successfully added type to pokemon");
+        res.status(200).send(data);
 
     } catch (error) {
         res.status(500).json({message:error.message});
@@ -197,7 +189,7 @@ const deleteTypeFromPokemon = async (req, res) => {
     try {
         const pokemonId = parseInt(req.params.pokemonId);
         const data = await pokemonService.deleteTypeFromPokemon(pokemonId,req.body,res);
-        res.status(200).send("successfully deleted type from pokemon");
+        res.status(200).send(data);
     } catch (error) {
         res.status(500).json({message:error.message});
     }
@@ -207,7 +199,7 @@ const addAbilityToPokemon = async (req, res) => {
     try {
         const pokemonId = parseInt(req.params.pokemonId);
         const data = await pokemonService.addAbilityToPokemon(pokemonId,req.body,res);
-        res.status(200).send("successfully added ability to pokemon");
+        res.status(200).send(data);
 
     } catch (error) {
         res.status(500).json({message:error.message});
@@ -218,7 +210,7 @@ const deleteAbilityFromPokemon = async (req, res) => {
     try {
         const pokemonId = parseInt(req.params.pokemonId);
         const data = await pokemonService.deleteAbilityFromPokemon(pokemonId,req.body,res);
-        res.status(200).send("successfully deleted ability from pokemon");
+        res.status(200).send(data);
     } catch (error) {
         res.status(500).json({message:error.message});
     }

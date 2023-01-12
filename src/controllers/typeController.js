@@ -71,7 +71,7 @@ const updateType = async (req, res) => {
         if (!req.params.typeId) return res.status(400).json('id not provided');
         const id = parseInt(req.params.typeId);
         const data = await typeSerivice.updateType(id,req.body,res);
-        res.status(200).send("Type updated successfully");
+        res.status(200).send(data);
     } catch (error) {
         res.status(500).json({message: error.message});
     }
@@ -82,7 +82,7 @@ const deleteType = async (req, res) => {
         if (!req.params.typeId) return res.status(400).json('id not provided');
         const id = req.params.typeId;
         const data = await typeSerivice.deleteType(id, res);
-        res.status(200).send('Type has been deleted');
+        res.status(200).send({message:'Type has been deleted'});
 
     } catch (error) {
         res.status(500).json({message:error.message});

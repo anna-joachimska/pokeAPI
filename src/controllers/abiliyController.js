@@ -1,4 +1,4 @@
-const abilitySerivice = require("../services/AbilityService");
+const abilitySerivice = require("../services/abilityService");
 
 const getAllAbilities = async (req, res) => {
     try {
@@ -48,8 +48,8 @@ const getAllAbilitiesWithPokemons = async (req, res) => {
 }
 const createNewAbility = async (req, res) => {
     try {
-        const type = await abilitySerivice.createAbility(req.body);
-        res.status(201).send(type);
+        const ability = await abilitySerivice.createAbility(req.body);
+        res.status(201).send(ability);
     }
     catch(error) {
         res.status(500).json({message: error.message})
@@ -71,7 +71,7 @@ const updateAbility = async (req, res) => {
         if (!req.params.abilityId) return res.status(400).json('id not provided');
         const id = parseInt(req.params.abilityId);
         const data = await abilitySerivice.updateAbility(id,req.body,res);
-        res.status(200).send("Ability updated successfully");
+        res.status(200).send(data);
     } catch (error) {
         res.status(500).json({message: error.message});
     }
@@ -82,7 +82,7 @@ const deleteAbility = async (req, res) => {
         if (!req.params.abilityId) return res.status(400).json('id not provided');
         const id = req.params.abilityId;
         const data = await abilitySerivice.deleteAbility(id, res);
-        res.status(200).send('Ability has been deleted');
+        res.status(200).send({message:'Ability has been deleted'});
 
     } catch (error) {
         res.status(500).json({message:error.message});

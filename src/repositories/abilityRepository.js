@@ -15,7 +15,19 @@ const getAllAbilitiesSortedByName = async (page,size) => {
     return data
 }
 const getAllAbilitiesWithPokemons = async (page,size) => {
-    const data = await Ability.findAll({order: [['id', 'ASC']],include:Pokemon, limit:page, offset:size})
+    const data = await Ability.findAll({
+        order: [['id', 'ASC']],
+        include: [
+            {
+                model: Pokemon,
+                attributes: ['id','name', 'hp','attack','defense','generation'],
+                through: {
+                    attributes: []
+                }
+            }
+        ],
+        limit:page,
+        offset:size})
     return data
 }
 const getAllAbilitiesSortedByIdASC = async(page, size) => {

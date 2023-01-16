@@ -3,36 +3,36 @@ const PokemonsAbilities = require("../models/Pokemons_Abilities");
 const PokemonsTypes = require("../models/Pokemons_Types");
 const sequelize = require("../../db");
 const {splitMulti} = require('../functions/splitMulti');
-const {indexOfMaxTypesValue, indexOfMaxAbilitiesValue} = require("../functions/maxValueAndIndex");
 const {countPokemons} = require("../functions/countPokemons");
 
 const getTypeWithAverageHigherHp = async () => {
-
-    const data = await sequelize.query(`SELECT AVG(hp) as average_values, "pokemons_types"."TypeId"
-from "pokemons", "pokemons_types" where pokemons.id="pokemons_types"."PokemonId" 
-group by "pokemons_types"."TypeId";`);
-    const averageHp = data[0];
-    const {types, index} = indexOfMaxTypesValue(averageHp)
-    return Type.findOne({where:{id: types[index]}})
+    const data = await sequelize.query(`SELECT avg(hp) as average_hp, "pokemons_types"."TypeId" as type_id, "Types"."name" 
+from "pokemons", "pokemons_types", "Types"
+where pokemons.id="pokemons_types"."PokemonId" and "pokemons_types"."TypeId" = "Types"."id" 
+group by "pokemons_types"."TypeId", "Types"."name"
+order by average_hp desc 
+limit 1;`);
+    return data[0][0]
 }
 
 const getTypeWithAverageHigherAttack = async () => {
-    const data = await sequelize.query(`SELECT AVG(attack) as average_values, "pokemons_types"."TypeId"
-from "pokemons", "pokemons_types" where pokemons.id="pokemons_types"."PokemonId" 
-group by "pokemons_types"."TypeId";`);
-    const averageAttack = data[0];
-    console.log(averageAttack)
-    const {types, index} = indexOfMaxTypesValue(averageAttack)
-    return Type.findOne({where:{id: types[index]}})
+    const data = await sequelize.query(`SELECT avg(attack) as average_attack, "pokemons_types"."TypeId" as type_id, "Types"."name" 
+from "pokemons", "pokemons_types", "Types"
+where pokemons.id="pokemons_types"."PokemonId" and "pokemons_types"."TypeId" = "Types"."id" 
+group by "pokemons_types"."TypeId", "Types"."name"
+order by average_attack desc 
+limit 1;`);
+    return data[0][0]
 }
 
 const getTypeWithAverageHigherDefense = async () => {
-    const data = await sequelize.query(`SELECT AVG(defense) as average_values, "pokemons_types"."TypeId"
-from "pokemons", "pokemons_types" where pokemons.id="pokemons_types"."PokemonId" 
-group by "pokemons_types"."TypeId";`);
-    const averageDefense = data[0];
-    const {types, index} = indexOfMaxTypesValue(averageDefense)
-    return Type.findOne({where:{id: types[index]}})
+    const data = await sequelize.query(`SELECT avg(defense) as average_defense, "pokemons_types"."TypeId" as type_id, "Types"."name" 
+from "pokemons", "pokemons_types", "Types"
+where pokemons.id="pokemons_types"."PokemonId" and "pokemons_types"."TypeId" = "Types"."id" 
+group by "pokemons_types"."TypeId", "Types"."name"
+order by average_defense desc 
+limit 1;`);
+    return data[0][0]
 }
 
 const countByType = async (typeId) => {
@@ -42,26 +42,11 @@ const countByType = async (typeId) => {
 }
 
 const countPokemonsWithMoreThanXType = async(page, size, number) => {
-    const data = await sequelize.query(`SELECT count("pokemons_types"."TypeId"), "pokemons"."id"
+    const [results, metadata] = await sequelize.query(`SELECT count("pokemons"."id") as pokemons_count  from (SELECT count("pokemons_types"."TypeId") as "count", "pokemons"."id"
 from "pokemons_types", "pokemons" where pokemons.id="pokemons_types"."PokemonId" 
-group by "pokemons"."id";`)
-    const accessData = data[0];
-    const pokemonsIds = countPokemons(accessData,number)
-    const pokemons = await Pokemon.findAll({
-        where:{id:pokemonsIds},
-        include: [
-            {
-                model: Type,
-                attributes: ['id','name',],
-                through: {
-                    attributes: []
-                }
-            }
-        ],
-        limit:page,
-        offset:size})
-    const count = await Pokemon.count({where:{id:pokemonsIds}})
-    return {count, pokemons}
+group by "pokemons"."id") as types_count, pokemons WHERE count >$number group by "types_count"."count", "pokemons"."id"
+limit 1;`,{bind: { number: number }})
+    return results[0]
 }
 
 const getMostPopularType = async (page, size) => {
@@ -107,30 +92,33 @@ const countPokemonsInMostPopularType = async (page, size) => {
 }
 
 const getAbilityWithAverageHigherHp = async () => {
-    const data = await sequelize.query(`SELECT AVG(hp) as average_values, "pokemons_abilities"."AbilityId"
-from "pokemons", "pokemons_abilities" where pokemons.id="pokemons_abilities"."PokemonId" 
-group by "pokemons_abilities"."AbilityId";`);
-    const averageDefense = data[0];
-    const {abilities, index} = indexOfMaxAbilitiesValue(averageDefense);
-    return Ability.findOne({where:{id: abilities[index]}})
+    const data = await sequelize.query(`SELECT avg(hp) as average_hp, "pokemons_abilities"."AbilityId" as ability_id, "abilities"."name" 
+from "pokemons", "pokemons_abilities", "abilities"
+where pokemons.id="pokemons_abilities"."PokemonId" and "pokemons_abilities"."AbilityId" = "abilities"."id" 
+group by "pokemons_abilities"."AbilityId", "abilities"."name"
+order by average_hp desc 
+limit 1;`);
+    return data[0][0]
 }
 
 const getAbilityWithAverageHigherAttack = async () => {
-    const data = await sequelize.query(`SELECT AVG(attack) as average_values, "pokemons_abilities"."AbilityId"
-from "pokemons", "pokemons_abilities" where pokemons.id="pokemons_abilities"."PokemonId" 
-group by "pokemons_abilities"."AbilityId";`);
-    const averageDefense = data[0];
-    const {abilities, index} = indexOfMaxAbilitiesValue(averageDefense);
-    return Ability.findOne({where:{id: abilities[index]}})
+    const data = await sequelize.query(`SELECT avg(attack) as average_attack, "pokemons_abilities"."AbilityId" as ability_id, "abilities"."name" 
+from "pokemons", "pokemons_abilities", "abilities"
+where pokemons.id="pokemons_abilities"."PokemonId" and "pokemons_abilities"."AbilityId" = "abilities"."id" 
+group by "pokemons_abilities"."AbilityId", "abilities"."name"
+order by average_attack desc 
+limit 1;`);
+    return data[0][0]
 }
 
 const getAbilityWithAverageHigherDefense = async () => {
-    const data = await sequelize.query(`SELECT AVG(defense) as average_values, "pokemons_abilities"."AbilityId"
-from "pokemons", "pokemons_abilities" where pokemons.id="pokemons_abilities"."PokemonId" 
-group by "pokemons_abilities"."AbilityId";`);
-    const averageDefense = data[0];
-    const {abilities, index} = indexOfMaxAbilitiesValue(averageDefense);
-    return Ability.findOne({where:{id: abilities[index]}})
+    const data = await sequelize.query(`SELECT avg(defense) as average_defense, "pokemons_abilities"."AbilityId" as ability_id, "abilities"."name" 
+from "pokemons", "pokemons_abilities", "abilities"
+where pokemons.id="pokemons_abilities"."PokemonId" and "pokemons_abilities"."AbilityId" = "abilities"."id" 
+group by "pokemons_abilities"."AbilityId", "abilities"."name"
+order by average_defense desc 
+limit 1;`);
+    return data[0][0]
 }
 
 const countByAbility = async (abilityId) => {

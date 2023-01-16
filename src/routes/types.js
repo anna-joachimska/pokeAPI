@@ -6,10 +6,10 @@ router.get('/', typeController.getAllTypes);
 
 router.post('/', typeController.createNewType);
 
-router.get('/type/:typeId', typeController.getType);
+router.get('/:typeId', typeController.getType);
 
-router.put('/type/:typeId', typeController.updateType);
+router.put('/:typeId', typeController.updateType);
 
-router.delete('/type/:typeId', typeController.deleteType);
+router.delete('/:typeId', typeController.deleteType);
 
 module.exports = router;

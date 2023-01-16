@@ -1,12 +1,13 @@
 const express = require('express');
-// require('dotenv').config();
-const pokemonRoutes = require("../pokeAPI/routes/pokemons");
-const typeRoutes = require('../pokeAPI/routes/types');
-const abilityRoutes = require('../pokeAPI/routes/abilities');
+const pokemonRoutes = require("./src/routes/pokemons");
+const typeRoutes = require('./src/routes/types');
+const abilityRoutes = require('./src/routes/abilities');
+const statisticRoutes = require('./src/routes/statitics');
 
 const bodyParser = require('body-parser');
 
 const app = express();
+
 
 // parse the body of incoming request and use the data
 app.use(bodyParser.urlencoded({extended:false}));
@@ -28,6 +29,7 @@ app.use((req, res, next) => {
 app.use('/pokemons', pokemonRoutes);
 app.use('/types', typeRoutes);
 app.use('/abilities', abilityRoutes);
+app.use('/statistics', statisticRoutes);
 
 const port = process.env.PORT || 8888;
 

@@ -1,0 +1,258 @@
+{
+	"info": {
+		"_postman_id": "5101170f-c21f-4e47-b385-83b8be4f521f",
+		"name": "pokemony",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22453937"
+	},
+	"item": [
+		{
+			"name": "get with pagination",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8888/types?size=3&page=1&sortBy=id&direction=asc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"types"
+					],
+					"query": [
+						{
+							"key": "size",
+							"value": "3"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "sortBy",
+							"value": "id"
+						},
+						{
+							"key": "direction",
+							"value": "asc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8888/abilities/278",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"unaware\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8888/abilities/278",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"abilities",
+						"278"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8888/statistics/ability/withAverageHigherHp",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8888/statistics//count/mostPopular/type",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"statistics",
+						"",
+						"count",
+						"mostPopular",
+						"type"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8888/pokemons/deleteAbilityFromPokemon/2",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"types\":[1]}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8888/pokemons//deleteTypeFromPokemon/21",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"pokemons",
+						"",
+						"deleteTypeFromPokemon",
+						"21"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8888/abilities/264",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"unnerve\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8888/abilities/278",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"abilities",
+						"278"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8888/pokemons/addTypeToPokemon/19",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"types\":[7]}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8888/pokemons/addTypeToPokemon/24",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"pokemons",
+						"addTypeToPokemon",
+						"24"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8888/pokemons/",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"test\",\r\n\"types\":[1,2],\r\n\"abilities\":[1,2,3],\r\n\"hp\":75,\r\n\"attack\": 80,\r\n\"defense\":70,\r\n\"generation\":\"I generation\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8888/pokemons",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"pokemons"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8888/types/21",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"test1\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8888/types/21",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"types",
+						"21"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

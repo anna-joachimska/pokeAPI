@@ -6,10 +6,10 @@ router.get('/', abilityController.getAllAbilities);
 
 router.post('/', abilityController.createNewAbility);
 
-router.get('/ability/:abilityId', abilityController.getAbility);
+router.get('/:abilityId', abilityController.getAbility);
 
-router.put('/ability/:abilityId', abilityController.updateAbility);
+router.put('/:abilityId', abilityController.updateAbility);
 
-router.delete('/ability/:abilityId', abilityController.deleteAbility);
+router.delete('/:abilityId', abilityController.deleteAbility);
 
 module.exports = router;

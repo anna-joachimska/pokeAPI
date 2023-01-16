@@ -8,11 +8,11 @@ const getTypeWithAverageHigherDefense = () => statisticRepository.getTypeWithAve
 
 const countByType = (typeId) => statisticRepository.countByType(typeId);
 
-const countPokemonsWithMoreThanXType = (page, size,number) => statisticRepository.countPokemonsWithMoreThanXType(page, size,number);
+const countPokemonsWithMoreThanXType = (number) => statisticRepository.countPokemonsWithMoreThanXType(number);
 
-const getMostPopularType = (page, size) => statisticRepository.getMostPopularType(page, size);
+const getMostPopularType = () => statisticRepository.getMostPopularType();
 
-const countPokemonsInMostPopularType = (page,size) => statisticRepository.countPokemonsInMostPopularType(page,size);
+const countPokemonsInMostPopularType = () => statisticRepository.countPokemonsInMostPopularType();
 
 const getAbilityWithAverageHigherHp = () => statisticRepository.getAbilityWithAverageHigherHp();
 
@@ -22,11 +22,11 @@ const getAbilityWithAverageHigherDefense = () => statisticRepository.getAbilityW
 
 const countByAbility = (abilityId) => statisticRepository.countByAbility(abilityId);
 
-const countPokemonsWithMoreXAbilities = (page, size, number) => statisticRepository.countPokemonsWithMoreThanXAbilities(page, size, number);
+const countPokemonsWithMoreXAbilities = (number) => statisticRepository.countPokemonsWithMoreThanXAbilities(number);
 
-const getMostPopularAbility = (page, size) => statisticRepository.getMostPopularAbility(page, size);
+const getMostPopularAbility = () => statisticRepository.getMostPopularAbility();
 
-const countPokemonsInMostPopularAbility = (page, size) => statisticRepository.countPokemonsInMostPopularAbility(page,size);
+const countPokemonsInMostPopularAbility = () => statisticRepository.countPokemonsInMostPopularAbility();
 
 module.exports = {
     getTypeWithAverageHigherHp,

@@ -35,9 +35,8 @@ const countByType = async (req,res) => {
 }
 const countPokemonsWithMoreThanXType = async (req,res) => {
     try {
-        const {page, size} = req.query
         const number = req.params.X
-        const data = await statisticSerivice.countPokemonsWithMoreThanXType(page, size, number)
+        const data = await statisticSerivice.countPokemonsWithMoreThanXType(number)
         res.status(200).json(data);
     } catch (error) {
         res.status(500).json({message:error.message});
@@ -45,8 +44,7 @@ const countPokemonsWithMoreThanXType = async (req,res) => {
 }
 const getMostPopularType = async (req,res) => {
     try {
-        const {page, size} = req.query
-        const data = await statisticSerivice.getMostPopularType(page, size)
+        const data = await statisticSerivice.getMostPopularType()
         res.status(200).json(data);
     } catch (error) {
         res.status(500).json({message:error.message});
@@ -54,8 +52,7 @@ const getMostPopularType = async (req,res) => {
 }
 const countPokemonsInMostPopularType = async (req,res) => {
     try {
-        const {page, size} = req.query
-        const data = await statisticSerivice.countPokemonsInMostPopularType(page,size)
+        const data = await statisticSerivice.countPokemonsInMostPopularType()
         res.status(200).json(data);
     } catch (error) {
         res.status(500).json({message:error.message});
@@ -98,9 +95,8 @@ const countByAbility = async (req,res) => {
 
 const countPokemonsWithMoreThanXAbilities = async (req,res) => {
     try {
-        const {page, size} = req.query
         const number = req.params.X
-        const data = await statisticSerivice.countPokemonsWithMoreXAbilities(page, size, number);
+        const data = await statisticSerivice.countPokemonsWithMoreXAbilities(number);
         res.status(200).json(data);
     } catch (error) {
         res.status(500).json({message:error.message});
@@ -108,8 +104,7 @@ const countPokemonsWithMoreThanXAbilities = async (req,res) => {
 }
 const getMostPopularAbility = async (req,res) => {
     try {
-        const {page, size} = req.query
-        const data = await statisticSerivice.getMostPopularAbility(page, size)
+        const data = await statisticSerivice.getMostPopularAbility()
         res.status(200).json(data);
     } catch (error) {
         res.status(500).json({message:error.message});
@@ -117,8 +112,7 @@ const getMostPopularAbility = async (req,res) => {
 }
 const countPokemonsInMostPopularAbility = async (req,res) => {
     try {
-        const {page, size} = req.query
-        const data = await statisticSerivice.countPokemonsInMostPopularAbility(page,size)
+        const data = await statisticSerivice.countPokemonsInMostPopularAbility()
         res.status(200).json(data);
     } catch (error) {
         res.status(500).json({message:error.message});

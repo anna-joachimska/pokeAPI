@@ -4,13 +4,13 @@ const PokemonsTypes = require("../models/Pokemons_Types");
 const sequelize = require("../../db");
 
 const getTypeWithAverageHigherHp = async () => {
-    const data = await sequelize.query(`SELECT avg(hp) as average_hp, "pokemons_types"."TypeId" as type_id, "Types"."name" 
+    const [results, metadata] = await sequelize.query(`SELECT avg(hp) as average_hp, "pokemons_types"."TypeId" as type_id, "Types"."name" 
 from "pokemons", "pokemons_types", "Types"
 where pokemons.id="pokemons_types"."PokemonId" and "pokemons_types"."TypeId" = "Types"."id" 
 group by "pokemons_types"."TypeId", "Types"."name"
 order by average_hp desc 
 limit 1;`);
-    return data[0][0]
+    return results[0]
 }
 
 const getTypeWithAverageHigherAttack = async () => {

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const abilityController = require("../controllers/abiliyController");
+const abilityController = require("../controllers/abilityController");
 
 router.get('/', abilityController.getAllAbilities);
 

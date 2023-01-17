@@ -1,6 +1,7 @@
 const {Pokemon, Type, Ability} = require("../models");
 const PokemonsTypes = require("../models/Pokemons_Types");
 const PokemonsAbilities = require("../models/Pokemons_Abilities");
+const {NotFoundError} = require("../errors/customError");
 
 const getPokemonDetails = async (id) => {
     const data = await Pokemon.findOne({
@@ -43,34 +44,23 @@ const getAllPokemons = async (page, size, sortBy, direction) => {
                 }
             },
         ],
-        order:[[sortBy,direction]],
+        order:[[sortBy || 'id', direction || 'ASC']],
         limit:size,
         offset:page})
     return data
 }
-const createPokemon = async (body, res) => {
-    if (!body.name || !body.hp || !body.attack || !body.defense || !body.generation || !body.types || !body.abilities){
-        throw new Error('missing data to create pokemon')
-    }
+const createPokemon = async (body) => {
     const checkIfExists = await Pokemon.findOne({where:{name:body.name}})
     if (checkIfExists) {
-        throw new Error("pokemon already exists in database")
-    }
-    const firstTypeId = body.types[0]
-    const firstAbilityId = body.abilities[0];
-    if (!firstTypeId) {
-        throw new Error("you must pass pokemon type")
-    }
-    if (!firstAbilityId) {
-        throw new Error("you must pass pokemon ability")
+        throw new Error("Pokemon already exists in database")
     }
     const firstType = await Type.findOne({where: {id: body.types[0]}});
     if (!firstType) {
-        return res.status(404).json({message:"Type not found"})
+        throw new NotFoundError("Type not found");
     }
     const firstAbility = await Ability.findOne({where:{id:body.abilities[0]}});
     if (!firstAbility) {
-        return res.status(404).json({message:"Ability not found"})
+        throw new NotFoundError("Ability not found");
     }
     const pokemon = await Pokemon.create({
         name: body.name,
@@ -85,21 +75,21 @@ const createPokemon = async (body, res) => {
     if (secondTypeId) {
         const secondType = await Type.findOne({where: {id: body.types[1]}});
         if (!secondType) {
-            return res.status(404).json({message:"Type not found"})
+            throw new NotFoundError("Type not found");
         }
         await pokemon.addType(secondType);
     }
     if(secondAbilityId) {
         const secondAbility = await Ability.findOne({where:{id:body.abilities[1]}});
         if (!secondAbility) {
-            return res.status(404).json({message:"Ability not found"})
+            throw new NotFoundError("Ability not found");
         }
         await pokemon.addAbility(secondAbility);
     }
     if (thirdAbilityId){
         const thirdAbility = await Ability.findOne({where:{id:body.abilities[2]}});
         if (!thirdAbility) {
-            return res.status(404).json({message:"Ability not found"})
+            throw new NotFoundError("Ability not found");
         }
         await pokemon.addAbility(thirdAbility);
     }
@@ -126,10 +116,12 @@ const createPokemon = async (body, res) => {
     return data
 }
 
-const updatePokemon = async (id, body, res) => {
+const updatePokemon = async (id, body) => {
     const { name, hp, attack, defense, generation} = body;
     const pokemon = await Pokemon.findOne({where:{id:id}});
-    if (!pokemon) return res.status(404).json('Pokemon not found');
+    if (!pokemon) {
+        throw new NotFoundError("Pokemon not found");
+    };
     const data = await pokemon.update({
             name:name,
             hp:hp,
@@ -158,32 +150,29 @@ const updatePokemon = async (id, body, res) => {
     return updatedPokemon
 }
 
-const deletePokemon = async (id,res) => {
+const deletePokemon = async (id) => {
     const pokemon = await Pokemon.findOne({where:{id:id}})
     if (!pokemon) {
-        return res.status(404).json({message: 'Pokemon not found'});
+        throw new NotFoundError('Pokemon not found');
     }
     await pokemon.destroy();
 }
-const addTypeToPokemon=async (pokemonId,body,res) => {
+
+const addTypeToPokemon=async (pokemonId,body) => {
     const pokemon = await Pokemon.findOne({where:{id:pokemonId}});
     if (!pokemon) {
-        return res.status(404).json({message:"Pokemon not found"})
+        throw new NotFoundError("Pokemon not found");
     }
-    const firstTypeId = body.types[0];
     const secondTypeId = body.types[1];
-    if (!firstTypeId) {
-        throw new Error("you must pass pokemon type")
-    }
     const firstType = await Type.findOne({where:{id:body.types[0]}});
     if (!firstType) {
-        return res.status(404).json({message:"Type not found"})
+        throw new NotFoundError("Type not found");
     }
     await pokemon.addType(firstType)
     if (secondTypeId) {
         const secondType = await Type.findOne({where: {id: body.types[1]}});
         if (!secondType) {
-            return res.status(404).json({message: "Type not found"})
+            throw new NotFoundError("Type not found");
         }
         await pokemon.addType(secondType)
     }
@@ -207,33 +196,29 @@ const addTypeToPokemon=async (pokemonId,body,res) => {
         ],})
     return updatedPokemon
 }
-const addAbilityToPokemon=async (pokemonId,body,res) => {
+const addAbilityToPokemon=async (pokemonId,body) => {
     const pokemon = await Pokemon.findOne({where:{id:pokemonId}});
     if (!pokemon) {
-        return res.status(404).json({message:"Pokemon not found"})
+        throw new NotFoundError("Pokemon not found")
     }
-    const firstAbilityId = body.abilities[0];
     const secondAbilityId = body.abilities[1];
     const thirdAbilityId = body.abilities[2];
-    if (!firstAbilityId) {
-        throw new Error("you must pass pokemon ability")
-    }
     const firstAbility = await Ability.findOne({where:{id:body.abilities[0]}});
     if (!firstAbility) {
-        return res.status(404).json({message:"Ability not found"})
+        throw new NotFoundError("Ability not found")
     }
     await pokemon.addAbility(firstAbility)
     if (secondAbilityId) {
         const secondAbility = await Ability.findOne({where: {id: body.abilities[1]}});
         if (!secondAbility) {
-            return res.status(404).json({message: "Ability not found"})
+            throw new NotFoundError("Ability not found")
         }
         await pokemon.addAbility(secondAbility)
     }
     if (thirdAbilityId) {
         const thirdAbility = await Ability.findOne({where: {id: body.abilities[2]}});
         if (!thirdAbility) {
-            return res.status(404).json({message: "Ability not found"})
+            throw new NotFoundError("Ability not found")
         }
         await pokemon.addAbility(thirdAbility)
     }
@@ -257,9 +242,11 @@ const addAbilityToPokemon=async (pokemonId,body,res) => {
         ],})
     return updatedPokemon
 }
-const deleteTypeFromPokemon = async (pokemonId,body,res) => {
+const deleteTypeFromPokemon = async (pokemonId,body) => {
     const pokemon = await Pokemon.findOne({where:{id:pokemonId}});
-    if (!pokemon) return res.status(404).json('Pokemon not found');
+    if (!pokemon) {
+        throw new NotFoundError("Pokemon not found")
+    }
     const firstTypeId = body.types[0];
     const secondTypeId = body.types[1];
     await PokemonsTypes.destroy({where:{TypeId:firstTypeId, PokemonId:pokemonId}})
@@ -287,9 +274,11 @@ const deleteTypeFromPokemon = async (pokemonId,body,res) => {
     return updatedPokemon
 }
 
-const deleteAbilityFromPokemon = async (pokemonId,body,res) => {
+const deleteAbilityFromPokemon = async (pokemonId,body) => {
     const pokemon = await Pokemon.findOne({where:{id:pokemonId}});
-    if (!pokemon) return res.status(404).json('Pokemon not found');
+    if (!pokemon) {
+        throw new NotFoundError('Pokemon not found');
+    }
     const firstAbilityId = body.abilities[0];
     const secondAbilityId = body.abilities[1];
     const thirdAbilityId = body.abilities[2];

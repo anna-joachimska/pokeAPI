@@ -1,4 +1,4 @@
-const typeSerivice = require("../services/TypeService");
+const typeSerivice = require("../services/typeService");
 
 const getAllTypes = async (req, res) => {
     try {
@@ -10,46 +10,43 @@ const getAllTypes = async (req, res) => {
     }
 }
 
-const createNewType = async (req, res) => {
+const createNewType = async (req, res, next) => {
     try {
         const type = await typeSerivice.createType(req.body);
         res.status(201).send(type);
     }
     catch(error) {
-        res.status(500).json({message: error.message})
+        return next(error)
     };
 }
 
-const getType = async (req, res) => {
+const getType = async (req, res, next) => {
     try {
-        if (!req.params.typeId) return res.status(400).json('id not provided');
         const id = parseInt(req.params.typeId);
         const data = await typeSerivice.getType(id);
         res.status(200).json(data);
     } catch (error) {
-        res.status(500).json({message: error.message})
+        return next(error)
     }
 }
-const updateType = async (req, res) => {
+const updateType = async (req, res, next) => {
     try {
-        if (!req.params.typeId) return res.status(400).json('id not provided');
         const id = parseInt(req.params.typeId);
-        const data = await typeSerivice.updateType(id,req.body,res);
+        const data = await typeSerivice.updateType(id,req.body);
         res.status(200).send(data);
     } catch (error) {
-        res.status(500).json({message: error.message});
+        return next(error)
     }
 }
 
-const deleteType = async (req, res) => {
+const deleteType = async (req, res, next) => {
     try {
-        if (!req.params.typeId) return res.status(400).json('id not provided');
-        const id = req.params.typeId;
-        const data = await typeSerivice.deleteType(id, res);
+        const id = parseInt(req.params.typeId);
+        const data = await typeSerivice.deleteType(id);
         res.status(200).send({message:'Type has been deleted'});
 
     } catch (error) {
-        res.status(500).json({message:error.message});
+        return next(error)
     }
 }
 

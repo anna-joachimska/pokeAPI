@@ -1,4 +1,4 @@
-const pokemonService = require("../services/PokemonService");
+const pokemonService = require("../services/pokemonService");
 
 const getAllPokemons = async (req, res) => {
     try {
@@ -9,89 +9,86 @@ const getAllPokemons = async (req, res) => {
         res.status(500).json({message: error.message})
     }
 }
-const createNewPokemon = async (req, res) => {
+const createNewPokemon = async (req, res, next) => {
     try {
-        const pokemon = await pokemonService.createPokemon(req.body,res);
+        const pokemon = await pokemonService.createPokemon(req.body);
         res.status(201).json(pokemon);
     }
     catch(error) {
-        res.status(500).json({message: error.message})
+        return next(error)
     };
 }
 
-const getPokemon = async (req, res) => {
+const getPokemon = async (req, res, next) => {
     try {
-        if (!req.params.pokemonId) return res.status(400).json('id not provided');
         const id = parseInt(req.params.pokemonId);
         const details = await pokemonService.getPokemonDetails(id)
         res.json(details);
     } catch (error) {
-        res.status(500).json({message: error.message})
+        return next(error)
     }
 }
 
-const updatePokemon = async (req, res) => {
+const updatePokemon = async (req, res, next) => {
     try {
-        if (!req.params.pokemonId) return res.status(400).json('id not provided');
         const id = parseInt(req.params.pokemonId);
-        const details = await pokemonService.updatePokemon(id, req.body, res);
+        const details = await pokemonService.updatePokemon(id, req.body);
         res.status(200).json(details);
     } catch (error) {
-        res.status(500).json({message: error.message});
+        return next(error)
     }
 }
 
-const deletePokemon = async (req, res) => {
+const deletePokemon = async (req, res, next) => {
     try {
-        if (!req.params.pokemonId) return res.status(400).json('id not provided');
-        const id = req.params.pokemonId;
-        const data = await pokemonService.deletePokemon(id,res)
+        const id = parseInt(req.params.pokemonId);
+        const data = await pokemonService.deletePokemon(id)
         res.status(200).send('Pokemon has been deleted');
 
     } catch (error) {
-        res.status(500).json({message:error.message});
+        return next(error)
     }
 }
 
-const addTypeToPokemon = async (req, res) => {
+const addTypeToPokemon = async (req, res, next) => {
     try {
         const pokemonId = parseInt(req.params.pokemonId);
-        const data = await pokemonService.addTypeToPokemon(pokemonId,req.body,res);
+        const data = await pokemonService.addTypeToPokemon(pokemonId,req.body);
         res.status(200).send(data);
 
     } catch (error) {
-        res.status(500).json({message:error.message});
+        return next(error)
     }
 }
 
-const deleteTypeFromPokemon = async (req, res) => {
+const deleteTypeFromPokemon = async (req, res, next) => {
     try {
         const pokemonId = parseInt(req.params.pokemonId);
-        const data = await pokemonService.deleteTypeFromPokemon(pokemonId,req.body,res);
+        const data = await pokemonService.deleteTypeFromPokemon(pokemonId,req.body);
         res.status(200).send(data);
     } catch (error) {
-        res.status(500).json({message:error.message});
+        return next(error)
     }
 }
 
-const addAbilityToPokemon = async (req, res) => {
+const addAbilityToPokemon = async (req, res, next) => {
     try {
         const pokemonId = parseInt(req.params.pokemonId);
-        const data = await pokemonService.addAbilityToPokemon(pokemonId,req.body,res);
+        const data = await pokemonService.addAbilityToPokemon(pokemonId,req.body);
         res.status(200).send(data);
 
     } catch (error) {
-        res.status(500).json({message:error.message});
+        return next(error)
     }
 }
 
-const deleteAbilityFromPokemon = async (req, res) => {
+const deleteAbilityFromPokemon = async (req, res, next) => {
     try {
         const pokemonId = parseInt(req.params.pokemonId);
-        const data = await pokemonService.deleteAbilityFromPokemon(pokemonId,req.body,res);
+        const data = await pokemonService.deleteAbilityFromPokemon(pokemonId,req.body);
         res.status(200).send(data);
     } catch (error) {
-        res.status(500).json({message:error.message});
+        return next(error)
     }
 }
 module.exports = {

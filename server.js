@@ -3,6 +3,7 @@ const pokemonRoutes = require("./src/routes/pokemons");
 const typeRoutes = require('./src/routes/types');
 const abilityRoutes = require('./src/routes/abilities');
 const statisticRoutes = require('./src/routes/statitics');
+const {pageNotFound, errorHandler} = require("./errorHandler")
 
 const bodyParser = require('body-parser');
 
@@ -30,6 +31,9 @@ app.use('/pokemons', pokemonRoutes);
 app.use('/types', typeRoutes);
 app.use('/abilities', abilityRoutes);
 app.use('/statistics', statisticRoutes);
+
+app.use(pageNotFound);
+app.use(errorHandler);
 
 const port = process.env.PORT || 8888;
 

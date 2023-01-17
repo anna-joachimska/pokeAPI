@@ -24,22 +24,22 @@ const getTypeWithAverageHigherDefense = async (req, res) => {
         res.status(500).json({message: error.message})
     }
 }
-const countByType = async (req,res) => {
+const countByType = async (req,res, next) => {
     try {
-        const typeId = req.params.typeId
+        const typeId = parseInt(req.params.typeId)
         const {count, type} = await statisticSerivice.countByType(typeId)
         res.status(200).json({count:count,type:type});
     } catch (error) {
-        res.status(500).json({message:error.message});
+        return next(error)
     }
 }
-const countPokemonsWithMoreThanXType = async (req,res) => {
+const countPokemonsWithMoreThanXType = async (req,res, next) => {
     try {
         const number = req.params.X
         const data = await statisticSerivice.countPokemonsWithMoreThanXType(number)
         res.status(200).json(data);
     } catch (error) {
-        res.status(500).json({message:error.message});
+        return next(error)
     }
 }
 const getMostPopularType = async (req,res) => {
@@ -83,23 +83,23 @@ const getAbilityWithAverageHigherDefense = async (req, res) => {
         res.status(500).json({message: error.message})
     }
 }
-const countByAbility = async (req,res) => {
+const countByAbility = async (req,res, next) => {
     try {
-        const abilityId = req.params.abilityId
+        const abilityId = parseInt(req.params.abilityId);
         const {count, ability} = await statisticSerivice.countByAbility(abilityId)
         res.status(200).json({count:count,ability:ability});
     } catch (error) {
-        res.status(500).json({message:error.message});
+        return next(error)
     }
 }
 
-const countPokemonsWithMoreThanXAbilities = async (req,res) => {
+const countPokemonsWithMoreThanXAbilities = async (req,res, next) => {
     try {
         const number = req.params.X
         const data = await statisticSerivice.countPokemonsWithMoreXAbilities(number);
         res.status(200).json(data);
     } catch (error) {
-        res.status(500).json({message:error.message});
+        return next(error)
     }
 }
 const getMostPopularAbility = async (req,res) => {

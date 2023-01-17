@@ -1,4 +1,5 @@
 const statisticRepository = require("../repositories/statisticRepository");
+const {ValidationError} = require("../errors/customError");
 
 const getTypeWithAverageHigherHp = () => statisticRepository.getTypeWithAverageHigherHp();
 
@@ -6,9 +7,19 @@ const getTypeWithAverageHigherAttack = () => statisticRepository.getTypeWithAver
 
 const getTypeWithAverageHigherDefense = () => statisticRepository.getTypeWithAverageHigherDefense();
 
-const countByType = (typeId) => statisticRepository.countByType(typeId);
+const countByType = (typeId) => {
+    if(!typeId){
+        throw new ValidationError("Not valid id provided");
+    }
+    return statisticRepository.countByType(typeId);
+}
 
-const countPokemonsWithMoreThanXType = (number) => statisticRepository.countPokemonsWithMoreThanXType(number);
+const countPokemonsWithMoreThanXType = (number) => {
+    if (!number) {
+        throw new ValidationError("You must pass a number of types to compare")
+    }
+    return statisticRepository.countPokemonsWithMoreThanXType(number);
+}
 
 const getMostPopularType = () => statisticRepository.getMostPopularType();
 
@@ -20,9 +31,19 @@ const getAbilityWithAverageHigherAttack = () => statisticRepository.getAbilityWi
 
 const getAbilityWithAverageHigherDefense = () => statisticRepository.getAbilityWithAverageHigherDefense();
 
-const countByAbility = (abilityId) => statisticRepository.countByAbility(abilityId);
+const countByAbility = (abilityId) => {
+    if(!abilityId){
+        throw new ValidationError("Not valid id provided")
+    }
+    return statisticRepository.countByAbility(abilityId);
+}
 
-const countPokemonsWithMoreXAbilities = (number) => statisticRepository.countPokemonsWithMoreThanXAbilities(number);
+const countPokemonsWithMoreXAbilities = (number) => {
+    if(!number) {
+        throw new ValidationError("You must pass a number of abilities to compare");
+    }
+    return statisticRepository.countPokemonsWithMoreThanXAbilities(number);
+}
 
 const getMostPopularAbility = () => statisticRepository.getMostPopularAbility();
 

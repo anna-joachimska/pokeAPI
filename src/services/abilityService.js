@@ -12,26 +12,28 @@ const getAbility = (id) => {
 const getAllAbilities = (page, size, sortBy, direction) => abilityRepository.getAllAbilities(page, size, sortBy, direction);
 
 const createAbility = async (body) => {
-    if(!body.name) {
+    const name = body.name
+    if(name) {
         throw new ValidationError("You must pass a data to create new type")
     }
-    if(body.name.length<3) {
+    if(name.length<3) {
         throw new ValidationError("Not valid length of name")
     }
-    return abilityRepository.createAbility(body);
+    return abilityRepository.createAbility(name);
 };
 
 const updateAbility = (id, body) => {
+    const name = body.name
     if(!id) {
         throw new ValidationError("Not valid id provided")
     }
-    if(!body.name){
+    if(!name){
         throw new ValidationError("You must pass a data to update ability")
     }
-    if(body.name.length>3){
+    if(name.length<3){
         throw new ValidationError("Not valid length of name")
     }
-    return abilityRepository.updateAbility(id, body);
+    return abilityRepository.updateAbility(id, name);
 };
 
 const deleteAbility = (id) => {

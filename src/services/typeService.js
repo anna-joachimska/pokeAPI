@@ -11,26 +11,28 @@ const getType = (id) => {
 const getAllTypes = (page, size, sortBy , direction) => typeRepository.getAllTypes(page, size, sortBy , direction);
 
 const createType = async (body) => {
-    if(!body.name) {
+    const name = body.name
+    if(!name) {
         throw new ValidationError("You must pass a data to create new type")
     }
-    if(body.name.length<3){
+    if(name.length<3){
         throw new ValidationError("Not valid length of name")
     }
-    return typeRepository.createType(body);
+    return typeRepository.createType(name);
 };
 
 const updateType = (id, body) => {
+    const name = body.name
     if(!id) {
         throw new ValidationError("Not valid id provided")
     }
-    if(!body.name){
+    if(!name){
         throw new ValidationError("You must pass a data to update type")
     }
-    if(body.name.length<3){
+    if(name.length<3){
         throw new ValidationError("Not valid length of name")
     }
-    return typeRepository.updateType(id, body);
+    return typeRepository.updateType(id, name);
 };
 
 const deleteType = (id) => {

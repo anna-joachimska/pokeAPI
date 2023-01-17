@@ -13,19 +13,18 @@ const getAllTypes = async (page, size, sortBy , direction) => {
     const data = await Type.findAll({order:[[sortBy || 'id',direction || 'ASC']],limit:size, offset:page})
     return data
 }
-const createType = async (body) => {
-    const checkIfExists = await Type.findOne({where:{name:body.name}})
+const createType = async (name) => {
+    const checkIfExists = await Type.findOne({where:{name:name}})
     if (checkIfExists) {
         throw new ValidationError("Type already exists in database")
     }
     const type = await Type.create({
-        name: body.name,
+        name: name,
     });
     return type
 }
 
-const updateType = async (id, body) => {
-    const name = body.name;
+const updateType = async (id, name) => {
     const type = await Type.findOne({where:{id:id}});
     if (!type) {
         throw new NotFoundError("Type not found");
@@ -34,6 +33,7 @@ const updateType = async (id, body) => {
         name:name},{where:{id:id}})
     return data
 }
+
 const deleteType = async (id) => {
     const type = await Type.findOne({where:{id:id}})
     if (!type) {
@@ -41,7 +41,7 @@ const deleteType = async (id) => {
     }
     const pokemonWithThisType = await PokemonsTypes.findAll({where:{TypeId:id}})
     if (pokemonWithThisType.length) {
-        throw new Error("Cannot delete type if any pokemons has this type")
+        throw new ValidationError("Cannot delete type if any pokemons has this type")
     }
     await type.destroy();
 }

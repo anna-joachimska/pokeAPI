@@ -1,6 +1,6 @@
 const {Ability} = require("../models");
 const PokemonsAbilities = require("../models/Pokemons_Abilities");
-const {NotFoundError} = require("../errors/customError");
+const {ValidationError, NotFoundError} = require("../errors/customError");
 
 const getAbility = async (id) => {
     const data = await Ability.findOne({where:{id:id}})
@@ -14,24 +14,24 @@ const getAllAbilities = async (page, size, sortBy, direction) => {
     return data
 }
 
-const createAbility = async (body) => {
-    const checkIfExists = await Ability.findOne({where:{name:body.name}})
+const createAbility = async (name) => {
+    const checkIfExists = await Ability.findOne({where:{name:name}})
     if (checkIfExists) {
-        throw new Error("Ability already exists in database")
+        throw new ValidationError("Ability already exists in database")
     }
     const ability = await Ability.create({
-        name: body.name,
+        name: name,
     });
     return ability
 }
 
-const updateAbility = async (id, body) => {
+const updateAbility = async (id, name) => {
     const ability = await Ability.findOne({where:{id:id}});
     if (!ability) {
         throw new NotFoundError('Ability not found');
     }
     const data = await ability.update({
-        name:body.name},{where:{id:id}})
+        name:name},{where:{id:id}})
     return data
 }
 const deleteAbility = async (id) => {
@@ -41,7 +41,7 @@ const deleteAbility = async (id) => {
     }
     const pokemonWithThisAbility = await PokemonsAbilities.findAll({where:{AbilityId:id}})
     if (pokemonWithThisAbility.length) {
-        throw new Error("Cannot delete ability if any pokemons has this ability")
+        throw new ValidationError("Cannot delete ability if any pokemons has this ability")
     }
     await ability.destroy();
 }

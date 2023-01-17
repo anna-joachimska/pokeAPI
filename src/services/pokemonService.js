@@ -17,6 +17,12 @@ const createPokemon = async (body) => {
     if(body.name.length<3) {
         throw new ValidationError("Not valid length of name")
     }
+    if(body.types.length>2){
+        throw new ValidationError("Pokemon may have max 2 types")
+    }
+    if(body.abilities.length>3){
+        throw new ValidationError("Pokemon may have max 3 abilities")
+    }
     const firstTypeId = body.types[0]
     const firstAbilityId = body.abilities[0];
     if (!firstTypeId) {
@@ -50,6 +56,9 @@ const addTypeToPokemon = (pokemonId,body) => {
     if (!firstTypeId) {
         throw new ValidationError("You must pass pokemon type")
     }
+    if(body.types.length>2){
+        throw new ValidationError("Pokemon may have max 2 types")
+    }
     return pokemonRepository.addTypeToPokemon(pokemonId,body);
 }
 
@@ -57,6 +66,9 @@ const addAbilityToPokemon = (pokemonId,body) => {
     const firstAbilityId = body.abilities[0];
     if (!firstAbilityId) {
         throw new ValidationError("You must pass pokemon ability")
+    }
+    if(body.abilities.length>3){
+        throw new ValidationError("Pokemon may have max 2 abilities")
     }
     return pokemonRepository.addAbilityToPokemon(pokemonId,body);
 }

@@ -3,7 +3,7 @@ const pokemonRoutes = require("./src/routes/pokemons");
 const typeRoutes = require('./src/routes/types');
 const abilityRoutes = require('./src/routes/abilities');
 const statisticRoutes = require('./src/routes/statitics');
-const {pageNotFound, errorHandler} = require("./errorHandler")
+const {pageNotFound, errorHandler} = require("./src/errors/errorHandler")
 
 const bodyParser = require('body-parser');
 

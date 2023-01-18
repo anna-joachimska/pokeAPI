@@ -1,11 +1,17 @@
 const typeRepository = require("../repositories/typeRepository");
-const {ValidationError} = require("../errors/customError");
+const {ValidationError, NotFoundError} = require("../errors/customError");
+const {Type} = require("../models");
+const PokemonsTypes = require("../models/Pokemons_Types");
 
-const getType = (id) => {
+const getType = async (id) => {
     if(!id) {
         throw new ValidationError("Not valid id provided")
     }
-    return typeRepository.getType(id);
+    const data = await typeRepository.getType(id);
+    if(!data) {
+        throw new NotFoundError("Type not found");
+    }
+    return data
 }
 
 const getAllTypes = (page, size, sortBy , direction) => typeRepository.getAllTypes(page, size, sortBy , direction);
@@ -18,10 +24,14 @@ const createType = async (body) => {
     if(name.length<3){
         throw new ValidationError("Not valid length of name")
     }
+    const checkIfExists = await Type.findOne({where:{name:name}})
+    if (checkIfExists) {
+        throw new ValidationError("Type already exists in database")
+    }
     return typeRepository.createType(name);
 };
 
-const updateType = (id, body) => {
+const updateType = async (id, body) => {
     const name = body.name
     if(!id) {
         throw new ValidationError("Not valid id provided")
@@ -32,14 +42,26 @@ const updateType = (id, body) => {
     if(name.length<3){
         throw new ValidationError("Not valid length of name")
     }
-    return typeRepository.updateType(id, name);
+    const type = await Type.findOne({where:{id:id}});
+    if (!type) {
+        throw new NotFoundError("Type not found");
+    }
+    return typeRepository.updateType(type, id, name);
 };
 
-const deleteType = (id) => {
+const deleteType = async (id) => {
     if(!id) {
         throw new ValidationError("Not valid id provided")
     }
-    return typeRepository.deleteType(id);
+    const type = await Type.findOne({where:{id:id}})
+    if (!type) {
+        throw new NotFoundError("Type not found");
+    }
+    const pokemonWithThisType = await PokemonsTypes.findAll({where:{TypeId:id}})
+    if (pokemonWithThisType.length) {
+        throw new ValidationError("Cannot delete type if any pokemons has this type")
+    }
+    return typeRepository.deleteType(type);
 }
 
 module.exports = {

@@ -43,7 +43,7 @@ const deletePokemon = async (req, res, next) => {
     try {
         const id = parseInt(req.params.pokemonId);
         const data = await pokemonService.deletePokemon(id)
-        res.status(200).send('Pokemon has been deleted');
+        res.status(200).send({message:'Pokemon has been deleted'});
 
     } catch (error) {
         return next(error)

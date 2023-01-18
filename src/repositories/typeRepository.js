@@ -4,9 +4,6 @@ const {ValidationError, NotFoundError} = require("../errors/customError");
 
 const getType = async (id) => {
     const data = await Type.findOne({where:{id:id}})
-    if(!data) {
-        throw new NotFoundError("Type not found");
-    }
     return data
 }
 const getAllTypes = async (page, size, sortBy , direction) => {
@@ -14,35 +11,19 @@ const getAllTypes = async (page, size, sortBy , direction) => {
     return data
 }
 const createType = async (name) => {
-    const checkIfExists = await Type.findOne({where:{name:name}})
-    if (checkIfExists) {
-        throw new ValidationError("Type already exists in database")
-    }
     const type = await Type.create({
         name: name,
     });
     return type
 }
 
-const updateType = async (id, name) => {
-    const type = await Type.findOne({where:{id:id}});
-    if (!type) {
-        throw new NotFoundError("Type not found");
-    }
+const updateType = async (type, id, name) => {
     const data = await type.update({
         name:name},{where:{id:id}})
     return data
 }
 
-const deleteType = async (id) => {
-    const type = await Type.findOne({where:{id:id}})
-    if (!type) {
-        throw new NotFoundError("Type not found");
-    }
-    const pokemonWithThisType = await PokemonsTypes.findAll({where:{TypeId:id}})
-    if (pokemonWithThisType.length) {
-        throw new ValidationError("Cannot delete type if any pokemons has this type")
-    }
+const deleteType = async (type) => {
     await type.destroy();
 }
 

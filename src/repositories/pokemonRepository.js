@@ -115,13 +115,8 @@ const deletePokemon = async (pokemon) => {
 }
 
 const addTypeToPokemon=async (pokemonId, pokemon,types) => {
-    const secondTypeId = types[1];
-    const firstType = await Type.findOne({where:{id:types[0]}});
-    await pokemon.addType(firstType)
-    if (secondTypeId) {
-        const secondType = await Type.findOne({where: {id: types[1]}});
-        await pokemon.addType(secondType)
-    }
+    await pokemon.addTypes(types)
+
     const updatedPokemon = await Pokemon.findOne({
         where:{id:pokemonId},
         include: [
@@ -143,18 +138,7 @@ const addTypeToPokemon=async (pokemonId, pokemon,types) => {
     return updatedPokemon
 }
 const addAbilityToPokemon=async (pokemonId,pokemon, abilities) => {
-    const secondAbilityId = abilities[1];
-    const thirdAbilityId = abilities[2];
-    const firstAbility = await Ability.findOne({where:{id:abilities[0]}});
-    await pokemon.addAbility(firstAbility)
-    if (secondAbilityId) {
-        const secondAbility = await Ability.findOne({where: {id: abilities[1]}});
-        await pokemon.addAbility(secondAbility)
-    }
-    if (thirdAbilityId) {
-        const thirdAbility = await Ability.findOne({where: {id: abilities[2]}});
-        await pokemon.addAbility(thirdAbility)
-    }
+    await pokemon.addAbilities(abilities)
     const updatedPokemon = await Pokemon.findOne({
         where:{id:pokemonId},
         include: [

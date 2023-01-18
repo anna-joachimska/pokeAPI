@@ -11,39 +11,54 @@ const getPokemonDetails = (id) => {
 const getAllPokemons = (page, size, sortBy, direction) => pokemonRepository.getAllPokemons(page, size, sortBy, direction);
 
 const createPokemon = async (body) => {
-    const {name, hp, attack, defense, generation, types, abilities } = body
-    if (!name || !hp || !attack || !defense || !generation || !types || !abilities){
+    const pokemonData = {
+        name: body.name,
+        hp: body.hp,
+        attack: body.attack,
+        defense: body.defense,
+        generation: body.generation,
+        types: body.types,
+        abilities: body.abilities
+    }
+    if (!pokemonData.name || !pokemonData.hp || !pokemonData.attack || !pokemonData.defense
+        || !pokemonData.generation || !pokemonData.types || !pokemonData.abilities){
         throw new ValidationError('Missing data to create pokemon')
     }
-    if(name.length<3) {
+    if(pokemonData.name.length<3) {
         throw new ValidationError("Not valid length of name")
     }
-    if(types.length>2){
+    if(pokemonData.types.length>2){
         throw new ValidationError("Pokemon may have max 2 types")
     }
-    if(abilities.length>3){
+    if(pokemonData.abilities.length>3){
         throw new ValidationError("Pokemon may have max 3 abilities")
     }
-    const firstTypeId = types[0]
-    const firstAbilityId = abilities[0];
+    const firstTypeId = pokemonData.types[0]
+    const firstAbilityId = pokemonData.abilities[0];
     if (!firstTypeId) {
         throw new ValidationError("You must pass pokemon type")
     }
     if (!firstAbilityId) {
         throw new ValidationError("You must pass pokemon ability")
     }
-    return pokemonRepository.createPokemon(name, hp, attack, defense, generation, types, abilities );
+    return pokemonRepository.createPokemon(pokemonData);
     };
 
 const updatePokemon = (id, body) => {
-    const {name, hp, attack, defense, generation } = body
+    const pokemonData = {
+        name:body.name,
+        hp: body.hp,
+        attack: body.attack,
+        defense: body.defense,
+        generation: body.generation
+    }
     if (!id) {
         throw new ValidationError("Not valid id provided")
     }
-    if(body.name.length<3) {
+    if(pokemonData.name.length<3) {
         throw new ValidationError("Not valid length of name")
     }
-    return pokemonRepository.updatePokemon(id, name, hp, attack, defense, generation);
+    return pokemonRepository.updatePokemon(pokemonData);
     };
 
 const deletePokemon = (id) => {

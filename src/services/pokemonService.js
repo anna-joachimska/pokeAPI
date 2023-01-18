@@ -1,11 +1,16 @@
 const pokemonRepository = require("../repositories/pokemonRepository");
-const {ValidationError} = require("../errors/customError");
+const {ValidationError, NotFoundError} = require("../errors/customError");
+const {Pokemon, Type, Ability} = require("../models");
 
-const getPokemonDetails = (id) => {
+const getPokemonDetails = async (id) => {
     if (!id) {
         throw new ValidationError("Not valid id provided")
     }
-    return pokemonRepository.getPokemonDetails(id);
+    const data = await pokemonRepository.getPokemonDetails(id);
+    if (!data) {
+        throw new ValidationError('Pokemon not found');
+    }
+    return data
 }
 
 const getAllPokemons = (page, size, sortBy, direction) => pokemonRepository.getAllPokemons(page, size, sortBy, direction);
@@ -41,10 +46,43 @@ const createPokemon = async (body) => {
     if (!firstAbilityId) {
         throw new ValidationError("You must pass pokemon ability")
     }
+    const checkIfExists = await Pokemon.findOne({where:{name:pokemonData.name}})
+    if (checkIfExists) {
+        throw new ValidationError("Pokemon already exists in database")
+    }
+    const firstType = await Type.findOne({where: {id: pokemonData.types[0]}});
+    if (!firstType) {
+        throw new NotFoundError("Type not found");
+    }
+    const firstAbility = await Ability.findOne({where:{id:pokemonData.abilities[0]}});
+    if (!firstAbility) {
+        throw new NotFoundError("Ability not found");
+    }
+    const secondTypeId = pokemonData.types[1]
+    const secondAbilityId = pokemonData.abilities[1]
+    const thirdAbilityId = pokemonData.abilities[2]
+    if (secondTypeId){
+        const secondType = await Type.findOne({where: {id: pokemonData.types[1]}});
+        if (!secondType) {
+            throw new ValidationError("Second type not found")
+        }
+    }
+    if(secondAbilityId) {
+        const secondAbility = await Ability.findOne({where:{id:pokemonData.abilities[1]}});
+        if (!secondAbility) {
+            throw new ValidationError("Second ability not found")
+        }
+    }
+    if(thirdAbilityId) {
+        const thirdAbility = await Ability.findOne({where:{id:pokemonData.abilities[2]}});
+        if (!thirdAbility) {
+            throw new ValidationError("Third ability not found")
+        }
+    }
     return pokemonRepository.createPokemon(pokemonData);
     };
 
-const updatePokemon = (id, body) => {
+const updatePokemon = async (id, body) => {
     const pokemonData = {
         name:body.name,
         hp: body.hp,
@@ -58,17 +96,25 @@ const updatePokemon = (id, body) => {
     if(pokemonData.name.length<3) {
         throw new ValidationError("Not valid length of name")
     }
-    return pokemonRepository.updatePokemon(pokemonData);
+    const pokemon = await Pokemon.findOne({where:{id:id}});
+    if (!pokemon) {
+        throw new NotFoundError("Pokemon not found");
+    };
+    return pokemonRepository.updatePokemon(id, pokemon, pokemonData);
     };
 
-const deletePokemon = (id) => {
+const deletePokemon = async (id) => {
     if (!id) {
         throw new ValidationError("Not valid id provided")
     }
-    return pokemonRepository.deletePokemon(id);
+    const pokemon = await Pokemon.findOne({where:{id:id}})
+    if (!pokemon) {
+        throw new NotFoundError('Pokemon not found');
+    }
+    return pokemonRepository.deletePokemon(pokemon);
 }
 
-const addTypeToPokemon = (pokemonId,body) => {
+const addTypeToPokemon = async (pokemonId,body) => {
     const types = body.types
     const firstTypeId = types[0];
     if (!firstTypeId) {
@@ -77,10 +123,25 @@ const addTypeToPokemon = (pokemonId,body) => {
     if(types.length>2){
         throw new ValidationError("Pokemon may have max 2 types")
     }
-    return pokemonRepository.addTypeToPokemon(pokemonId,types);
+    const pokemon = await Pokemon.findOne({where:{id:pokemonId}});
+    if (!pokemon) {
+        throw new NotFoundError("Pokemon not found");
+    }
+    const firstType = await Type.findOne({where:{id:types[0]}});
+    if (!firstType) {
+        throw new NotFoundError("Type not found");
+    }
+    const secondTypeId = types[1];
+    if (secondTypeId) {
+        const secondType = await Type.findOne({where: {id: types[1]}});
+        if (!secondType) {
+            throw new NotFoundError("Second type not found");
+        }
+    }
+    return pokemonRepository.addTypeToPokemon(pokemonId, pokemon,types);
 }
 
-const addAbilityToPokemon = (pokemonId,body) => {
+const addAbilityToPokemon = async (pokemonId,body) => {
     const abilities = body.abilities
     const firstAbilityId = abilities[0];
     if (!firstAbilityId) {
@@ -89,23 +150,53 @@ const addAbilityToPokemon = (pokemonId,body) => {
     if(abilities.length>3){
         throw new ValidationError("Pokemon may have max 2 abilities")
     }
-    return pokemonRepository.addAbilityToPokemon(pokemonId,abilities);
+    const pokemon = await Pokemon.findOne({where:{id:pokemonId}});
+    if (!pokemon) {
+        throw new NotFoundError("Pokemon not found")
+    }
+    const secondAbilityId = abilities[1];
+    const thirdAbilityId = abilities[2];
+    const firstAbility = await Ability.findOne({where:{id:abilities[0]}});
+    if (!firstAbility) {
+        throw new NotFoundError("Ability not found")
+    }
+    if (secondAbilityId) {
+        const secondAbility = await Ability.findOne({where: {id: abilities[1]}});
+        if (!secondAbility) {
+            throw new NotFoundError("Second ability not found")
+        }
+    }
+    if (thirdAbilityId) {
+        const thirdAbility = await Ability.findOne({where: {id: abilities[2]}});
+        if (!thirdAbility) {
+            throw new NotFoundError("Third ability not found")
+        }
+    }
+    return pokemonRepository.addAbilityToPokemon(pokemonId,pokemon,abilities);
 }
 
-const deleteTypeFromPokemon = (pokemonId,body) =>{
+const deleteTypeFromPokemon = async (pokemonId,body) =>{
     const types = body.types
     const firstTypeId = types[0];
     if (!firstTypeId) {
         throw new ValidationError("You must pass pokemon type")
     }
+    const pokemon = await Pokemon.findOne({where:{id:pokemonId}});
+    if (!pokemon) {
+        throw new NotFoundError("Pokemon not found")
+    }
     return pokemonRepository.deleteTypeFromPokemon(pokemonId,types);
 }
 
-const deleteAbilityFromPokemon = (pokemonId,body) =>{
+const deleteAbilityFromPokemon = async (pokemonId,body) =>{
     const abilities = body.abilities
     const firstAbilityId = abilities[0];
     if (!firstAbilityId) {
         throw new ValidationError("You must pass pokemon ability")
+    }
+    const pokemon = await Pokemon.findOne({where:{id:pokemonId}});
+    if (!pokemon) {
+        throw new NotFoundError('Pokemon not found');
     }
     return pokemonRepository.deleteAbilityFromPokemon(pokemonId,abilities);
 }

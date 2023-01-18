@@ -56,25 +56,10 @@ const createPokemon = async (pokemonData) => {
         defense: pokemonData.defense,
         generation: pokemonData.generation,
     });
-    const firstType = await Type.findOne({where: {id: pokemonData.types[0]}});
-    const firstAbility = await Ability.findOne({where:{id:pokemonData.abilities[0]}});
-    const secondTypeId = pokemonData.types[1]
-    const secondAbilityId = pokemonData.abilities[1]
-    const thirdAbilityId = pokemonData.abilities[2]
-    if (secondTypeId) {
-        const secondType = await Type.findOne({where: {id: pokemonData.types[1]}});
-        await pokemon.addType(secondType);
-    }
-    if(secondAbilityId) {
-        const secondAbility = await Ability.findOne({where:{id:pokemonData.abilities[1]}});
-        await pokemon.addAbility(secondAbility);
-    }
-    if (thirdAbilityId){
-        const thirdAbility = await Ability.findOne({where:{id:pokemonData.abilities[2]}});
-        await pokemon.addAbility(thirdAbility);
-    }
-    await pokemon.addType(firstType);
-    await pokemon.addAbility(firstAbility);
+    const types = await Type.findAll({where:{id:pokemonData.types}})
+    const abilities = await Ability.findAll({where:{id:pokemonData.abilities}})
+    await pokemon.addTypes(types);
+    await pokemon.addAbilities(abilities);
     const data = await Pokemon.findOne({
         where:{id:pokemon.id},
         include: [

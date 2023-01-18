@@ -1,6 +1,5 @@
 const {Ability} = require("../models");
-const PokemonsAbilities = require("../models/Pokemons_Abilities");
-const {ValidationError, NotFoundError} = require("../errors/customError");
+
 
 const getAbility = async (id) => {
     const data = await Ability.findOne({where:{id:id}})

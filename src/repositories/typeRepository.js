@@ -1,6 +1,5 @@
 const {Type} = require("../models");
-const PokemonsTypes = require("../models/Pokemons_Types");
-const {ValidationError, NotFoundError} = require("../errors/customError");
+
 
 const getType = async (id) => {
     const data = await Type.findOne({where:{id:id}})
